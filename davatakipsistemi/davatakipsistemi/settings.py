@@ -77,10 +77,21 @@ WSGI_APPLICATION = 'davatakipsistemi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'DavaTakipSistemi',  # Uzaktaki veritabanı adı
+        'USER': 'root',    # MySQL kullanıcı adı
+        'PASSWORD': '1453.',         # MySQL şifresi
+        'HOST': '77.92.154.83',    # Uzak MySQL sunucusunun IP adresi veya alan adı
+        'PORT': '3306',              # MySQL varsayılan portu (genelde 3306)
     }
 }
 
