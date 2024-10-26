@@ -1,0 +1,62 @@
+<!-- templates/upload.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel File Upload</title>
+    <style>
+        #drop-zone {
+            width: 100%;
+            max-width: 600px;
+            height: 200px;
+            margin: 50px auto;
+            border: 2px dashed #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<div id="drop-zone">Drag & Drop Excel File Here</div>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+
+    // Prevent default behaviors for drag and drop
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, e => e.preventDefault());
+    });
+
+    dropZone.addEventListener('drop', async (e) => {
+        const file = e.dataTransfer.files[0];
+        if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+            let formData = new FormData();
+            formData.append("file", file);
+
+            // Dosyayı Django'ya gönder
+            const response = await fetch("{% url 'upload_file' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: formData
+            });
+
+            const result = await response.json();
+            if (result.status === "success") {
+                console.log("File uploaded successfully!", result.data);
+            } else {
+                console.error("Error:", result.message);
+            }
+        } else {
+            alert("Please upload a valid Excel file.");
+        }
+    });
+</script>
+
+</body>
+</html>
