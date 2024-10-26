@@ -19,9 +19,12 @@ from django.urls import path, include
 # http://127.0.0.1:8000/ => anasayfa
 # http://127.0.0.1:8000/index => anasayfa
 # http://127.0.0.1:8000/muvekkildetay/1 => 1. müvekkil 
+# bebeğim buraya uploadı neden eklemedin aşkm
+# http://127.0.0.1:8000/notifications/ => bildirim paneline gitmeli ama gitmiyor...
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('anasayfa.urls')),
-    path('upload/', include('fileIO.urls'))
+    path('upload/', include('fileIO.urls')),
+    path('notifications/', include('notifications.urls')),
 ]

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="notification-box border p-3" style="position: fixed; top: 56px; left: 0; width: 250px; height: 80vh; overflow-y: auto;">
+    <h5>Bildirimler</h5>
+    <ul class="list-group">
+        {% for notification in notifications %}
+            <li class="list-group-item {% if notification.is_read %}text-muted{% else %}{% if notification.priority == 'Kırmızı' %}bg-danger{% elif notification.priority == 'Sarı' %}bg-warning{% elif notification.priority == 'Mavi' %}bg-info{% endif %}{% endif %}">
+                {% if notification.url %}
+                    <a href="{{ notification.url }}" style="text-decoration: underline;">{{ notification.message }}</a>
+                {% else %}
+                    {{ notification.message }}
+                {% endif %}
+            </li>
+        {% empty %}
+            <li class="list-group-item">Henüz bildirim yok</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

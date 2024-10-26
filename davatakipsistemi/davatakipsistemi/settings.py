@@ -66,10 +66,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notifications.context_processors.notification_processor',  # Bu satırı ekleyin
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'davatakipsistemi.wsgi.application'
 

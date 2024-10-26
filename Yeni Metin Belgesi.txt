@@ -6,14 +6,6 @@ Django veya Flask framework'lerinden birini seçin. Eğer daha hızlı gelişen 
 Veri Modeli Tasarımı:
 Müvekkil, dava, ödeme gibi veri yapılarının ilişkilerini belirleyin (ör. bir müvekkilin birden fazla davası olabilir).
 
-
-
-
-
-
-
-
-
 2. Proje Yapısı ve Modüller
 Kullanıcı Yönetimi:
 Avukatların ve belki müvekkillerin giriş yapabilmesini sağlayacak kullanıcı kimlik doğrulaması (authentication) sistemi kurun.
@@ -25,21 +17,6 @@ Bildirimler ve Takvim:
 Önemli duruşma veya ödeme tarihleri için otomatik e-posta veya sistem içi bildirimler.
 Raporlama ve Ödeme Takibi:
 Avukatın müvekkillere yapılan hizmetler için ödeme alıp almadığını takip edebilmesi için bir ödeme raporu sistemi.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 3. Görev Dağılımı
 Kişi 1:
@@ -62,3 +39,8 @@ Otomatik testler yazmaya özen gösterin (örneğin Django’nun testing framewo
 Projeyi test aşamasından geçirdikten sonra, bulut tabanlı bir sunucuya (örneğin AWS, DigitalOcean) deploy edin.
 SSL sertifikası ve güvenlik önlemleri almayı unutmayın.
 Bu yol haritası proje boyunca size rehberlik edebilir ve görev paylaşımı sayesinde iş yükü dengeli bir şekilde dağılacaktır.
+
+
+TABLO 1 BİLDİRİMLER:
+
+SÜTUNLAR : BİLDİRİM İD - BİLDİRİM URL - BİLDİRİM METNİ - BİLDİRİM KATEGORİSİ (ÖNCELİK) (KIRMIZI-SARI-YEŞİL) - OKUNMA DURUMU (TRUE FALSE)

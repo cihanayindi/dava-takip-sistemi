@@ -1,7 +1,107 @@
 {% extends "base.html" %}
 
-{% block title %} Anasayfa {%endblock%}
+{% block title %} Anasayfa {% endblock %}
 
 {% block content %}
-    <h1>Anasayfaya hoşgeldin</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Ana İçerik -->
+            <div class="col-md-9 offset-md-3">
+                <div class="main-content">
+                    <!-- Search Bar ve Sonuçlar Kutusu -->
+                    <div class="search-section mt-4">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Arama yap..." onkeyup="filterResults()">
+                        
+                        <!-- Arama Sonuçları Kutusu -->
+                        <div id="searchResults" class="border mt-2 p-3" style="max-height: 300px; overflow-y: auto;">
+                            <!-- Sonuçlar burada dinamik olarak görünecek -->
+                        </div>
+                    </div>
+
+                    <!-- Dava Bilgileri Tablosu -->
+                    <div class="case-table mt-4">
+                        <h5>Dava Bilgileri</h5>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Dava No</th>
+                                    <th>Dava Türü</th>
+                                    <th>Müvekkil</th>
+                                    <th>Dava Durumu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="caseTableBody">
+                                <!-- Tablo verileri dinamik olarak buraya eklenecek -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const data = [
+            "Dava 1: Miras davası",
+            "Dava 2: Boşanma davası",
+            "Dava 3: İş davası",
+            "Müvekkil 1: Ahmet Yılmaz",
+            "Müvekkil 2: Mehmet Demir",
+            "Müvekkil 3: Ayşe Kaya"
+        ];
+
+        // Dava bilgileri
+        const caseData = [
+            { no: 'D001', type: 'Miras Davası', client: 'Ahmet Yılmaz', status: 'Devam Ediyor' },
+            { no: 'D002', type: 'Boşanma Davası', client: 'Mehmet Demir', status: 'Tamamlandı' },
+            { no: 'D003', type: 'İş Davası', client: 'Ayşe Kaya', status: 'Devam Ediyor' }
+        ];
+
+        // Sayfa yüklendiğinde tabloyu doldur
+        window.onload = function() {
+            loadCaseTable();
+        };
+
+        function loadCaseTable() {
+            const caseTableBody = document.getElementById('caseTableBody');
+            caseTableBody.innerHTML = '';  // Eski tablo satırlarını temizle
+
+            caseData.forEach(caseInfo => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${caseInfo.no}</td>
+                    <td>${caseInfo.type}</td>
+                    <td>${caseInfo.client}</td>
+                    <td>${caseInfo.status}</td>
+                `;
+                caseTableBody.appendChild(row);
+            });
+        }
+
+        function filterResults() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = '';  // Eski sonuçları temizle
+            
+            if (input === '') {
+                resultsDiv.style.display = 'none'; // Eğer input boşsa sonuçları gizle
+                return;
+            }
+
+            const filteredResults = data.filter(item => item.toLowerCase().includes(input));
+
+            if (filteredResults.length > 0) {
+                resultsDiv.style.display = 'block'; // Sonuçlar varsa göster
+                filteredResults.forEach(item => {
+                    const resultItem = document.createElement('div');
+                    resultItem.classList.add('result-item');
+                    resultItem.textContent = item;
+                    resultsDiv.appendChild(resultItem);
+                });
+            } else {
+                resultsDiv.style.display = 'none'; // Eğer sonuç yoksa gizle
+            }
+        }
+    </script>
 {% endblock %}
