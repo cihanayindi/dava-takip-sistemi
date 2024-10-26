@@ -23,5 +23,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('anasayfa.urls')),
-    path('fileio/', include('fileIO.urls'))
+    path('upload/', include('fileIO.urls'))
 ]
