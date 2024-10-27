@@ -16,6 +16,7 @@ def upload_file(request):
             data = read_excel_file(file)
             excel_data = data.to_dict(orient="records")  # Satır satır JSON formatına dönüştür
             return redirect(reverse('view_excel_data'))
+       
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)})
     return render(request, 'fileIO/upload.html')
