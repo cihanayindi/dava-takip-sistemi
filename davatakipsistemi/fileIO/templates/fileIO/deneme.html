@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Dosyası Yükleme</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f3f4f6;
+        }
+
+        .upload-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        @media (min-width: 1200px) {
+            .upload-container {
+                max-width: 88%; /* Büyük ekranlarda maksimum genişlik */
+            }
+        }
+        
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .upload-container {
+                max-width: 93%; /* Orta ekranlarda %80 genişlik */
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .upload-container {
+                max-width: 98%; /* Küçük ekranlarda tam genişlik */
+            }
+        }
+        h2 {
+            color: #333;
+        }
+
+        #drop-zone {
+            border: 2px dashed #aaa;
+            border-radius: 8px;
+            padding: 40px;
+            color: #777;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        #drop-zone.dragover {
+            background-color: #f0f8ff;
+            color: #555;
+        }
+
+        #file-name {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .upload-btn:hover {
+            background-color: #45a049;
+        }
+
+        .table-container {
+            max-width: 100%; /* Genişliği %100 olarak ayarlandı */
+            width: 100%;
+            margin-top: 20px;
+            overflow-x: auto; /* Yatay kaydırma eklendi */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            min-width: 900px; /* Küçük ekranlarda daha düzgün görünmesi için min genişlik eklendi */
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td {
+            white-space: nowrap; /* Hücrelerin satır içinde kalmasını sağlar */
+        }
+    </style>
+</head>
+<body>
+
+<div class="upload-container">
+    <h2>Excel Dosyası Yükle</h2>
+    
+    <div id="drop-zone">Excel Dosyasını Buraya Sürükleyin veya Tıklayın</div>
+    
+    <form id="upload-form" method="POST" enctype="multipart/form-data" action="{% url 'upload_file' %}">
+        {% csrf_token %}
+        <input type="file" id="file-input" name="file" accept=".xlsx" required>
+        <button type="submit" class="upload-btn">Yükle ve İçeriği Görüntüle</button>
+    </form>
+    
+    <!-- Yüklenen dosya adı burada görüntülenir -->
+    <div id="file-name"></div>
+
+    <!-- Excel dosyası içeriği burada gösterilecek -->
+    <div class="table-container" id="table-container" style="display: none;">
+        <table id="excel-table">
+            <!-- İçerik JavaScript ile eklenecek -->
+        </table>
+    </div>
+</div>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const fileNameDisplay = document.getElementById('file-name');
+    const tableContainer = document.getElementById('table-container');
+    const excelTable = document.getElementById('excel-table');
+
+    // Drop zone click event to trigger file input click
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    // Handle drag and drop events
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+        });
+    });
+
+    // Show the file name when a file is selected or dropped
+    dropZone.addEventListener('drop', (e) => {
+        const file = e.dataTransfer.files[0];
+        if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+            fileInput.files = e.dataTransfer.files;  // Assign dropped file to file input
+            fileNameDisplay.textContent = `Seçilen dosya: ${file.name}`;
+        } else {
+            alert("Lütfen geçerli bir Excel dosyası yükleyin.");
+        }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            fileNameDisplay.textContent = `Seçilen dosya: ${file.name}`;
+        }
+    });
+
+    // Form submit event to show Excel content in table
+    document.getElementById('upload-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Fetch Excel file content via AJAX call
+        const formData = new FormData(this);
+        const response = await fetch("{% url 'upload_file' %}", {
+            method: "POST",
+            body: formData
+        });
+        const data = await response.json();
+
+        // Clear previous table content
+        excelTable.innerHTML = "";
+
+        // Populate table with new data
+        if (data && data.rows) {
+            const headers = data.headers;
+            const rows = data.rows;
+
+            // Add header row
+            const headerRow = document.createElement("tr");
+            headers.forEach(header => {
+                const th = document.createElement("th");
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+            excelTable.appendChild(headerRow);
+
+            // Add data rows
+            rows.forEach(row => {
+                const rowElement = document.createElement("tr");
+                row.forEach(cell => {
+                    const td = document.createElement("td");
+                    td.textContent = cell;
+                    rowElement.appendChild(td);
+                });
+                excelTable.appendChild(rowElement);
+            });
+
+            // Display the table
+            tableContainer.style.display = "block";
+        }
+    });
+</script>
+
+</body>
+</html>

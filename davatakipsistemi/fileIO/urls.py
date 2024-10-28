@@ -1,7 +1,7 @@
 from django.urls import path
-from . import views
+from .views import upload_page, upload_file
 
 urlpatterns = [
-    path('', views.upload_file, name='upload_file'),
-    path('view-data/', views.view_excel_data, name='view_excel_data'),
+    path('', upload_page, name='upload_page'),  # Yükleme sayfası için URL
+    path('upload', upload_file, name='upload_file'),  # Dosya yüklemek için URL
 ]
