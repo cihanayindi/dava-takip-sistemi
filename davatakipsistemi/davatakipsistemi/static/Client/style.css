@@ -1,0 +1,64 @@
+/* Form Genel Stilleri */
+.client-form {
+    max-width: 500px; /* Form genişliğini ayarlama */
+    margin: 0 auto; /* Ortaya yerleştirme */
+    padding: 20px; /* İç boşluk */
+    border: 1px solid #ccc; /* Kenar çizgisi */
+    border-radius: 5px; /* Kenarları yuvarlama */
+    background-color: #f9f9f9; /* Arka plan rengi */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Gölgelendirme */
+}
+
+/* Form Başlık Stilleri */
+.client-form h2 {
+    text-align: center; /* Başlığı ortala */
+    color: #333; /* Başlık rengi */
+}
+
+/* Form Grup Stilleri */
+.form-group {
+    margin-bottom: 15px; /* Gruplar arasındaki boşluk */
+}
+
+/* Etiket Stilleri */
+.form-group label {
+    display: block; /* Etiketin tam genişlikte olmasını sağlar */
+    margin-bottom: 5px; /* Etiket ile girdi alanı arasındaki boşluk */
+    font-weight: bold; /* Kalın yazı stili */
+}
+
+/* Girdi Alanları ve Textarea Stilleri */
+.form-group input,
+.form-group textarea {
+    width: 100%; /* Girdi alanlarının tam genişlikte olmasını sağlar */
+    padding: 10px; /* İç boşluk */
+    border: 1px solid #ccc; /* Kenar çizgisi */
+    border-radius: 4px; /* Kenarları yuvarlama */
+    font-size: 1rem; /* Yazı boyutu */
+    transition: border-color 0.3s; /* Kenar rengi geçişi */
+}
+
+/* Girdi Alanlarının Focus Durumu */
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #007bff; /* Odaklanınca kenar rengi değişimi */
+    outline: none; /* Odak işaretini kaldır */
+}
+
+/* Gönder Butonu Stilleri */
+.submit-button {
+    width: 100%; /* Butonun tam genişlikte olmasını sağlar */
+    padding: 10px; /* İç boşluk */
+    background-color: #007bff; /* Arka plan rengi */
+    color: white; /* Yazı rengi */
+    border: none; /* Kenar çizgisini kaldır */
+    border-radius: 4px; /* Kenarları yuvarlama */
+    font-size: 1.2rem; /* Yazı boyutu */
+    cursor: pointer; /* İmleç şekli değişimi */
+    transition: background-color 0.3s; /* Arka plan rengi geçişi */
+}
+
+/* Butona Hover Durumu */
+.submit-button:hover {
+    background-color: #0056b3; /* Hover durumunda arka plan rengi değişimi */
+}

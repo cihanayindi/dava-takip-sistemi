@@ -27,4 +27,6 @@ urlpatterns = [
     path('',include('anasayfa.urls')),
     path('upload/', include('fileIO.urls')),
     path('notifications/', include('notifications.urls')),
+    path('client/', include('Client.urls')),
+    path('case/', include('Case.urls')),
 ]

@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %} Bildirimler {% endblock %}
+
 {% block content %}
-<div class="notification-box border p-3" style="position: fixed; top: 56px; left: 0; width: 250px; height: 80vh; overflow-y: auto;">
+{% comment %} <div class="notification-box border p-3" style="position: fixed; top: 56px; left: 0; width: 250px; height: 80vh; overflow-y: auto;">
     <h5>Bildirimler</h5>
     <ul class="list-group">
         {% for notification in notifications %}
@@ -16,5 +18,5 @@
             <li class="list-group-item">Henüz bildirim yok</li>
         {% endfor %}
     </ul>
-</div>
+</div> {% endcomment %}
 {% endblock %}

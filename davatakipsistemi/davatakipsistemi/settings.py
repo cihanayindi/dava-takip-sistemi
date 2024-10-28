@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'anasayfa',
     'fileIO',
     'notifications',
+    'Client',
+    'Case',
 ]
 
 MIDDLEWARE = [
