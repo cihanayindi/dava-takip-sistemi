@@ -4,7 +4,7 @@ from django.http import HttpResponse
 def client(request):
     return render(request, "Client/client.html")
 
-def muvvekil_ekle(request):
+def muvekkilEkle(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -16,4 +16,4 @@ def muvvekil_ekle(request):
         # Burada verileri kaydetme işlemleri yapılabilir
         
         return redirect('success_page')  # Başarılı bir işlem sonrası yönlendirme
-    return render(request, 'client/addclient.html')
+    return render(request, 'client/muvekkilekle.html')

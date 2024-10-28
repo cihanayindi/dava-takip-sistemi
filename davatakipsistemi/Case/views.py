@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-def client(request):
+def case(request):
     return render(request, "Case/case.html")
 
 

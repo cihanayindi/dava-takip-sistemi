@@ -47,11 +47,15 @@
                         <a class="nav-link" href="/case">Dava Ekleme</a>
                     </li>
                 </ul>
+
                 <!-- Çıkış butonunu sağa alma -->
                 <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Çıkış</a>
                     </li>
+                    {% endif %}
+                    
                 </ul>
             </div>
         </div>

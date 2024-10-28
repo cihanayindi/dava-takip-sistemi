@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'notifications',
     'Client',
     'Case',
+    'authentication'
 ]
 
 MIDDLEWARE = [
@@ -118,6 +119,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# settings.py
+LOGIN_URL = '/auth/login/'  # login URL'nizi belirtin
+
 
 
 # Internationalization

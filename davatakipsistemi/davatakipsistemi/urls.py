@@ -15,12 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth.decorators import login_required
+
 
 # http://127.0.0.1:8000/ => anasayfa
 # http://127.0.0.1:8000/index => anasayfa
 # http://127.0.0.1:8000/muvekkildetay/1 => 1. müvekkil 
 # bebeğim buraya uploadı neden eklemedin aşkm
-# http://127.0.0.1:8000/notifications/ => bildirim paneline gitmeli ama gitmiyor...
+# http://127.0.0.1:8000/notifications/ => bildirim paneli
+# http://127.0.0.1:8000/client/ => client paneli
+# http://127.0.0.1:8000/case/ => case paneli
+# http://127.0.0.1:8000/auth/login => login ekranı
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +35,5 @@ urlpatterns = [
     path('notifications/', include('notifications.urls')),
     path('client/', include('Client.urls')),
     path('case/', include('Case.urls')),
+    path('auth/', include('authentication.urls')),
 ]
