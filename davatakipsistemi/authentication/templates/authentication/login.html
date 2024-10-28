@@ -65,12 +65,27 @@
         .login-container button:hover {
             background-color: #4cae4c;
         }
+    .alert {
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        color: white;
+    }
+
+    .alert-danger {
+        background-color: #f44336; /* Kırmızı arka plan rengi */
+    }
     </style>
 </head>
 <body>
     <div class="login-container">
         <h2>Giriş Yap</h2>
         <form action="{% url 'login' %}" method="POST">
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{error}}
+                </div>
+            {% endif %}
             {% csrf_token %}
             <div class="form-group">
                 <label for="username">Kullanıcı Adı</label>
