@@ -1,8 +1,76 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %} Dava {% endblock %}
+{% block title %}Dava {% endblock %}
 
 {% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Ana İçerik -->
+            <div class="col-md-9 offset-md-3">
+                <div class="main-content">
+                    <div class="form-section mt-4">
+                        <h5>Yeni Dava Ekle</h5>
+                        <form action="{% url 'case' %}" method="POST" enctype="multipart/form-data" class="border p-4 rounded"> 
+                        {% comment %} üst kısımda url kısmı davaekleme gibi bir url ile değiştirilebilir ama gerekte yok aynı anda post ve get tek fonk'da da kullanılıyormuş {% endcomment %}
+                            {% csrf_token %}
 
-sa
+                            <div class="form-group">
+                                <label for="client">Müvekkil</label>
+                                <select id="client" name="client" class="form-control" required>
+                                    <!-- Müvekkil seçenekleri buraya dinamik olarak eklenecek -->
+                                </select>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="case_number">Dava Numarası</label>
+                                <input type="text" id="case_number" name="case_number" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="case_type">Dava Türü</label>
+                                <input type="text" id="case_type" name="case_type" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="status">Durum</label>
+                                <input type="text" id="status" name="status" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="start_date">Başlangıç Tarihi</label>
+                                <input type="date" id="start_date" name="start_date" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="end_date">Bitiş Tarihi</label>
+                                <input type="date" id="end_date" name="end_date" class="form-control">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="hearing_date">Duruşma Tarihi</label>
+                                <input type="date" id="hearing_date" name="hearing_date" class="form-control">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="court">Mahkeme</label>
+                                <input type="text" id="court" name="court" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="description">Açıklama</label>
+                                <textarea id="description" name="description" rows="4" class="form-control"></textarea>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="case_file">Dava Dosyası</label>
+                                <input type="file" id="case_file" name="case_file" class="form-control">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mt-4">Dava Ekle</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

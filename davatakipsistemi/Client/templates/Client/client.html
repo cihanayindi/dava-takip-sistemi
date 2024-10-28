@@ -1,47 +1,52 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% load static %}
-
-{% block title %} Müvekkil {% endblock %}
+{% block title %}Müvekkil {% endblock %}
 
 {% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Ana İçerik -->
+            <div class="col-md-9 offset-md-3">
+                <div class="main-content">
+                    <div class="form-section mt-4">
+                        <form method="POST" action="{% url 'muvekkilekle' %}" class="border p-4 rounded" style="max-width: 500px; margin: auto;">
+                            {% csrf_token %}
 
-<form method="POST" action="{% url 'muvekkilekle' %}" style="max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
-    {% csrf_token %}
-    
-    <div style="margin-bottom: 15px;">
-        <label for="first_name" style="font-weight: bold; display: block; margin-bottom: 5px;">İsim:</label>
-        <input type="text" id="first_name" name="first_name" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                            <div class="form-group">
+                                <label for="first_name">İsim:</label>
+                                <input type="text" id="first_name" name="first_name" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="last_name">Soyisim:</label>
+                                <input type="text" id="last_name" name="last_name" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="tc_no">TC Kimlik No:</label>
+                                <input type="text" id="tc_no" name="tc_no" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="phone">Telefon Numarası:</label>
+                                <input type="tel" id="phone" name="phone" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="email">Mail Adresi:</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="address">İkamet Adresi:</label>
+                                <textarea id="address" name="address" class="form-control" rows="4" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mt-4">Müvekkil Ekle</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div style="margin-bottom: 15px;">
-        <label for="last_name" style="font-weight: bold; display: block; margin-bottom: 5px;">Soyisim:</label>
-        <input type="text" id="last_name" name="last_name" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-    </div>
-
-    <div style="margin-bottom: 15px;">
-        <label for="tc_no" style="font-weight: bold; display: block; margin-bottom: 5px;">TC Kimlik No:</label>
-        <input type="text" id="tc_no" name="tc_no" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-    </div>
-
-    <div style="margin-bottom: 15px;">
-        <label for="phone" style="font-weight: bold; display: block; margin-bottom: 5px;">Telefon Numarası:</label>
-        <input type="tel" id="phone" name="phone" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-    </div>
-
-    <div style="margin-bottom: 15px;">
-        <label for="email" style="font-weight: bold; display: block; margin-bottom: 5px;">Mail Adresi:</label>
-        <input type="email" id="email" name="email" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-    </div>
-
-    <div style="margin-bottom: 15px;">
-        <label for="address" style="font-weight: bold; display: block; margin-bottom: 5px;">İkamet Adresi:</label>
-        <textarea id="address" name="address" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical;"></textarea>
-    </div>
-
-    <button type="submit" style="padding: 10px 15px; border: none; border-radius: 4px; background-color: #007bff; color: white; font-weight: bold; cursor: pointer;">Müvekkil Ekle</button>
-</form>
-
-
-
 {% endblock %}
