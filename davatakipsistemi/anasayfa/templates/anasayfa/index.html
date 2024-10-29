@@ -18,22 +18,28 @@
                         </div>
                     </div>
 
-                    <!-- Dava Bilgileri Tablosu -->
                     <div class="case-table mt-4">
-                        <h5>Dava Bilgileri</h5>
-                        <table class="table table-striped">
-                            <thead>
+                    <h5>Dava Bilgileri</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Dava No</th>
+                                <th>Dava Türü</th>
+                                <th>Müvekkil</th>
+                                <th>Dava Durumu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for case in cases %}
                                 <tr>
-                                    <th>Dava No</th>
-                                    <th>Dava Türü</th>
-                                    <th>Müvekkil</th>
-                                    <th>Dava Durumu</th>
+                                    <td>{{ case.no }}</td>
+                                    <td>{{ case.type }}</td>
+                                    <td>{{ case.client }}</td>
+                                    <td>{{ case.status }}</td>
                                 </tr>
-                            </thead>
-                            <tbody id="caseTableBody">
-                                <!-- Tablo verileri dinamik olarak buraya eklenecek -->
-                            </tbody>
-                        </table>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                     </div>
                 </div>
             </div>
