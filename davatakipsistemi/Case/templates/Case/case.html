@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dava Detayı
+{% endblock title %}
+
+{% block content %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Dava Numarası: {{ case.case_number }}</h1>
+    <div class="card">
+        <div class="card-header">
+            <h4>Dava Bilgileri</h4>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Müvekkil:</strong> {{ case.client }}</li>
+                <li class="list-group-item"><strong>Dava Türü:</strong> {{ case.case_type }}</li>
+                <li class="list-group-item"><strong>Durum:</strong> {{ case.status }}</li>
+                <li class="list-group-item"><strong>Başlangıç Tarihi:</strong> {{ case.start_date }}</li>
+                <li class="list-group-item"><strong>Bitiş Tarihi:</strong> {{ case.end_date }}</li>
+                <li class="list-group-item"><strong>Duruşma Tarihi:</strong> {{ case.hearing_date }}</li>
+                <li class="list-group-item"><strong>Mahkeme:</strong> {{ case.court }}</li>
+                <li class="list-group-item"><strong>Açıklama:</strong> {{ case.description }}</li>
+                <li class="list-group-item"><strong>Oluşturulma Tarihi:</strong> {{ case.created_at }}</li>
+                <li class="list-group-item"><strong>Güncellenme Tarihi:</strong> {{ case.updated_at }}</li>
+            </ul>
+        </div>
+        <div class="card-footer text-center">
+            <a href="{% url 'add_case' %}" class="btn btn-primary">Yeni Dava Ekle</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

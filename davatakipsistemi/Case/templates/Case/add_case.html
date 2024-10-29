@@ -1,26 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Dava {% endblock %}
+{% block title %}Dava Ekle{% endblock %}
 
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <!-- Ana İçerik -->
             <div class="col-md-9 offset-md-3">
                 <div class="main-content">
                     <div class="form-section mt-4">
-                        {% comment %} <h5>Yeni Dava Ekle</h5> {% endcomment %}
-                        <form action="{% url 'add_case' %}" method="POST" enctype="multipart/form-data" class="border p-4 rounded"> 
-                        {% comment %} üst kısımda url kısmı davaekleme gibi bir url ile değiştirilebilir ama gerekte yok aynı anda post ve get tek fonk'da da kullanılıyormuş {% endcomment %}
+                        <form action="{% url 'add_case' %}" method="POST" enctype="multipart/form-data" class="border p-4 rounded">
                             {% csrf_token %}
-
+                            
                             <div class="form-group">
                                 <label for="client">Müvekkil</label>
                                 <select id="client" name="client" class="form-control" required>
-                                    <!-- Müvekkil seçenekleri buraya dinamik olarak eklenecek -->
+                                    <option value="">Müvekkil Seçin</option>
+                                    {% for client in clients %}
+                                        <option value="{{ client.id }}">{{ client.tc }} - {{ client.email }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
 
+                            <!-- Diğer form alanları -->
                             <div class="form-group mt-3">
                                 <label for="case_number">Dava Numarası</label>
                                 <input type="text" id="case_number" name="case_number" class="form-control" required>
