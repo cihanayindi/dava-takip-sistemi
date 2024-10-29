@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 import os
+
+
 class Client(models.Model):
     """
     Client model to store information about legal clients.
@@ -41,7 +43,6 @@ class Client(models.Model):
 
     def __str__(self):
         return f"{self.tc} - {self.email}"
-
 
 
 class Case(models.Model):
