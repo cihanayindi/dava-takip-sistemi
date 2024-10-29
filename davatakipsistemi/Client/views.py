@@ -1,10 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-def client(request):
-    return render(request, "Client/client.html")
-
-def muvekkilEkle(request):
+def addClient(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -16,4 +13,4 @@ def muvekkilEkle(request):
         # Burada verileri kaydetme işlemleri yapılabilir
         
         return redirect('success_page')  # Başarılı bir işlem sonrası yönlendirme
-    return render(request, 'client/muvekkilekle.html')
+    return render(request, 'client/add_client.html')

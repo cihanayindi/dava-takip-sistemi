@@ -33,7 +33,7 @@ urlpatterns = [
     path('',include('anasayfa.urls')),
     path('upload/', include('fileIO.urls')),
     path('notifications/', include('notifications.urls')),
-    path('client/', include('Client.urls')),
+    path('client/add_client', include('Client.urls')),
     path('case/', include('Case.urls')),
     path('auth/', include('authentication.urls')),
 ]

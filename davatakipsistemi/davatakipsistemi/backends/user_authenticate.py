@@ -6,5 +6,5 @@ def custom_authenticate(username, password):
 
     # veritabanı işini beceremediğim için bu fonksiyonu böylece bırakıyorum. 
     
-    return True
+    pass
 

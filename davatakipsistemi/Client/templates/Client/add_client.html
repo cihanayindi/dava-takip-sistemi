@@ -9,34 +9,44 @@
             <div class="col-md-9 offset-md-3">
                 <div class="main-content">
                     <div class="form-section mt-4">
-                        <form method="POST" action="{% url 'muvekkilekle' %}" class="border p-4 rounded" style="max-width: 500px; margin: auto;">
+                        <form method="POST" action="{% url 'add_client' %}" class="border p-4 rounded" style="max-width: 500px; margin: auto;">
                             {% csrf_token %}
 
+                            <!-- İsim alanı, yalnızca harf girilebilir -->
                             <div class="form-group">
                                 <label for="first_name">İsim:</label>
-                                <input type="text" id="first_name" name="first_name" class="form-control" required>
+                                <input type="text" id="first_name" name="first_name" class="form-control" required 
+                                       pattern="^[A-Za-zÇçĞğİıÖöŞşÜü\s]+$" title="İsim sadece harflerden oluşmalıdır.">
                             </div>
 
+                            <!-- Soyisim alanı, yalnızca harf girilebilir -->
                             <div class="form-group mt-3">
                                 <label for="last_name">Soyisim:</label>
-                                <input type="text" id="last_name" name="last_name" class="form-control" required>
+                                <input type="text" id="last_name" name="last_name" class="form-control" required 
+                                       pattern="^[A-Za-zÇçĞğİıÖöŞşÜü\s]+$" title="Soyisim sadece harflerden oluşmalıdır.">
                             </div>
 
+                            <!-- TC Kimlik No alanı, yalnızca 11 haneli sayı girilebilir -->
                             <div class="form-group mt-3">
                                 <label for="tc_no">TC Kimlik No:</label>
-                                <input type="text" id="tc_no" name="tc_no" class="form-control" required>
+                                <input type="text" id="tc_no" name="tc_no" class="form-control" required 
+                                       pattern="^\d{11}$" title="TC Kimlik No 11 haneli bir sayı olmalıdır." maxlength="11">
                             </div>
 
+                            <!-- Telefon numarası alanı, geçerli bir formatta olmalı -->
                             <div class="form-group mt-3">
                                 <label for="phone">Telefon Numarası:</label>
-                                <input type="tel" id="phone" name="phone" class="form-control" required>
+                                <input type="tel" id="phone" name="phone" class="form-control" required 
+                                       pattern="^\+?\d{10,13}$" title="Telefon numarası geçerli bir formatta olmalıdır (örn: +905555555555 veya 05555555555).">
                             </div>
 
+                            <!-- Mail adresi alanı, HTML5 e-posta doğrulaması -->
                             <div class="form-group mt-3">
                                 <label for="email">Mail Adresi:</label>
                                 <input type="email" id="email" name="email" class="form-control" required>
                             </div>
 
+                            <!-- İkamet Adresi alanı, boş bırakılamaz -->
                             <div class="form-group mt-3">
                                 <label for="address">İkamet Adresi:</label>
                                 <textarea id="address" name="address" class="form-control" rows="4" required></textarea>
