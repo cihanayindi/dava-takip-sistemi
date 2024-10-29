@@ -9,8 +9,8 @@
             <div class="col-md-9 offset-md-3">
                 <div class="main-content">
                     <div class="form-section mt-4">
-                        <h5>Yeni Dava Ekle</h5>
-                        <form action="{% url 'case' %}" method="POST" enctype="multipart/form-data" class="border p-4 rounded"> 
+                        {% comment %} <h5>Yeni Dava Ekle</h5> {% endcomment %}
+                        <form action="{% url 'add_case' %}" method="POST" enctype="multipart/form-data" class="border p-4 rounded"> 
                         {% comment %} üst kısımda url kısmı davaekleme gibi bir url ile değiştirilebilir ama gerekte yok aynı anda post ve get tek fonk'da da kullanılıyormuş {% endcomment %}
                             {% csrf_token %}
 

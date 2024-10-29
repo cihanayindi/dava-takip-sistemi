@@ -34,6 +34,6 @@ urlpatterns = [
     path('upload/', include('fileIO.urls')),
     path('notifications/', include('notifications.urls')),
     path('client/add_client', include('Client.urls')),
-    path('case/', include('Case.urls')),
+    path('case/add_case', include('Case.urls')),
     path('auth/', include('authentication.urls')),
 ]
