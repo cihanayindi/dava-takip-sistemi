@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 
-def list_tables(host, user, password, database):
+def execute_query(host, user, password, database):
     try:
         # Veritabanı bağlantısını oluştur
         connection = mysql.connector.connect(
@@ -13,38 +13,49 @@ def list_tables(host, user, password, database):
 
         if connection.is_connected():
             print("Bağlantı başarılı!")
-            cursor = connection.cursor()
-            # Tabloları listele
-            cursor.execute("SHOW TABLES")
-            tables = cursor.fetchall()
+            cursor = connection.cursor(buffered=True)  # Buffered olarak cursor oluştur
             
-            print("Veritabanındaki tablolar:")
-            for table in tables:
-                print(table[0])
+            while True:
+                # Kullanıcıdan sorgu al
+                query = input("SQL sorgusunu girin (Çıkmak için 'exit' yazın): ")
+                
+                # Çıkış koşulu
+                if query.lower() == 'exit':
+                    print("Programdan çıkılıyor.")
+                    break
+                
+                try:
+                    # Sorguyu çalıştır ve sonucu yazdır
+                    cursor.execute(query)
+                    
+                    # Sorgunun türüne göre sonuçları işle
+                    if query.strip().lower().startswith("select") or query.strip().lower().startswith("show"):
+                        results = cursor.fetchall()
+                        for row in results:
+                            print(row)
+                    else:
+                        # Diğer sorgular için (INSERT, UPDATE, DELETE vb.) etkilenen satır sayısını yazdır
+                        connection.commit()
+                        print(f"{cursor.rowcount} satır etkilendi.")
+                
+                except Error as e:
+                    print(f"Sorgu hatası: {e}")
     
     except Error as e:
         print(f"Bağlantı hatası: {e}")
+    
     finally:
+        # Bağlantıyı kapat
         if connection.is_connected():
             cursor.close()
             connection.close()
             print("Bağlantı kapatıldı.")
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'DavaTakipSistemi',  # Uzaktaki veritabanı adı
-        'USER': 'root',    # MySQL kullanıcı adı
-        'PASSWORD': '1453.',         # MySQL şifresi
-        'HOST': '77.92.154.83',    # Uzak MySQL sunucusunun IP adresi veya alan adı
-        'PORT': '3306',              # MySQL varsayılan portu (genelde 3306)
-    }
-}
-# Kullanıcı bilgilerini tanımlayın
+# Veritabanı bilgilerini tanımlayın
 host = '77.92.154.83'  # Uzaktaki veritabanı sunucusunun IP adresi
-user = 'root'   # Veritabanı kullanıcı adı
-password = '1453.'       # Veritabanı parolası
+user = 'root'          # Veritabanı kullanıcı adı
+password = '1453.'     # Veritabanı parolası
 database = 'DavaTakipSistemi'  # Veritabanı adı
 
 # Fonksiyonu çağırın
-list_tables(host, user, password, database)
+execute_query(host, user, password, database)
