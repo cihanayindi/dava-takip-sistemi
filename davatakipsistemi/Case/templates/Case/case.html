@@ -15,7 +15,7 @@ Dava Detayı
         </div>
         <div class="card-body">
             <ul class="list-group">
-                <li class="list-group-item"><strong>Müvekkil:</strong> {{ case.client }}</li>
+                <li class="list-group-item"><strong>Müvekkil:</strong> {{ case.client.name }} {{case.client.surname}}</li>
                 <li class="list-group-item"><strong>Dava Türü:</strong> {{ case.case_type }}</li>
                 <li class="list-group-item"><strong>Durum:</strong> {{ case.status }}</li>
                 <li class="list-group-item"><strong>Başlangıç Tarihi:</strong> {{ case.start_date }}</li>
