@@ -10,6 +10,8 @@ class Client(models.Model):
     Attributes:
         id (AutoField): Unique identifier for the client, automatically incremented.
         tc (str): Turkish Identification Number, unique for each client.
+        first_name (str): First name of the client.
+        last_name (str): Last name of the client.
         address (str): Address of the client.
         phone (str): Phone number of the client.
         email (str): Email address of the client.
@@ -26,6 +28,8 @@ class Client(models.Model):
     
     id = models.AutoField(primary_key=True)  # Otomatik artan ve unique id
     tc = models.CharField(max_length=11, unique=True)  # T.C. Kimlik No
+    name = models.CharField(max_length=50)  # Ad
+    surname = models.CharField(max_length=50)  # Soyad
     address = models.TextField()  # Adres
     phone = models.CharField(max_length=15)  # Telefon
     email = models.EmailField()  # Mail
@@ -42,7 +46,8 @@ class Client(models.Model):
     notes = models.TextField(blank=True, null=True)  # Notlar
 
     def __str__(self):
-        return f"{self.tc} - {self.email}"
+        return f"{self.tc}-{self.name} {self.surname}"
+
 
 
 class Case(models.Model):

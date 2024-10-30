@@ -9,14 +9,14 @@ Müvekkil Detayı
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Müvekkil İsmi: {{ client.notes }}</h1>
+    <h1 class="text-center mb-4">Müvekkil İsmi: {{ client.name }} {{ client.surname }}</h1>
     <div class="card">
         <div class="card-header">
             <h4>Müvekkil Bilgileri</h4>
         </div>
         <div class="card-body">
             <ul class="list-group">
-                <li class="list-group-item"><strong>Adresi:</strong> {{ client.address }}</li>
+                <li class="list-group-item"><strong>Tc Kimlik No:</strong> {{ client.tc }}</li>
                 <li class="list-group-item"><strong>Telefon:</strong> {{ client.phone }}</li>
                 <li class="list-group-item"><strong>Email:</strong> {{ client.email }}</li>
                 <li class="list-group-item"><strong>Anlaşma Miktarı:</strong> {{ client.agreement_amount }}</li>
@@ -25,6 +25,7 @@ Müvekkil Detayı
                 <li class="list-group-item"><strong>Dosya Masrafları:</strong> {{ client.file_expenses }}</li>
                 <li class="list-group-item"><strong>En Son SMS Tarihi:</strong> {{ client.last_sms_date }}</li>
                 <li class="list-group-item"><strong>Müvekkilin Dosyaları:</strong> {{ client.files }}</li>
+                <li class="list-group-item"><strong>Adresi:</strong> {{ client.address }}</li>
                 <li class="list-group-item"><strong>Oluşturulma Tarihi:</strong> {{ client.created_at }}</li>
                 <li class="list-group-item"><strong>Güncellenme Tarihi:</strong> {{ client.updated_at }}</li>
             </ul>

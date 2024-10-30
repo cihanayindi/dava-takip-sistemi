@@ -22,6 +22,8 @@ def addClient(request):
         # Client nesnesi oluşturuluyor
         client = Client(
             tc=tc_no,
+            first_name=first_name,
+            last_name=last_name,
             address=address,
             phone=phone,
             email=email,
@@ -30,7 +32,7 @@ def addClient(request):
             remaining_balance=remaining_balance,
             file_expenses=file_expenses,
             files="",  # Müvekkilin dosyaları (ilk etapta boş bırakabiliriz)
-            notes=f"{first_name} {last_name}",  # İlk ve soyad bilgisini notlara ekledik
+            notes="",  # İlk ve soyad bilgisini notlara ekledik
         )
         
         # Veritabanına kaydediyoruz
