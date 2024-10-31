@@ -1,12 +1,12 @@
 from .xlsxReader import read_excel_file
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from Client.models import DailyFile, UploadedFile
 
-
+@login_required
 def upload_page(request):
-    return render(request, 'fileIO/deneme.html')  # upload.html şablonunu yükler
-
+    return render(request, 'fileIO/upload_daily.html')  # upload.html şablonunu yükler
 def upload_file(request):
     if request.method == 'POST' and request.FILES['file']:
         excel_file = request.FILES['file']

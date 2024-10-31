@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-    {% block title %} {% endblock %} | Takip Sistemi
-    </title>
+    <title>{% block title %} {% endblock %} | Takip Sistemi</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
-        /* Bildirim kutusunu sadece geniş ekranlarda göster */
+        /* Bildirim kutusunu yalnızca geniş ekranlarda göster */
         @media (max-width: 768px) {
             .notification-box {
                 display: none;
@@ -19,70 +19,28 @@
         /* Navbar drop-down ile bildirim kutusu çakışmasını önlemek için */
         .notification-box {
             background-color: #f8f9fa;
-            z-index: 1000; /* Navbar altında kalmasını sağlamak için */
+            z-index: 1000;
         }
 
         /* Ana içerik kısmının sol boşluğunu yalnızca geniş ekranlarda ayarla */
-        @media (min-width: 768px) {
+        {% comment %} @media (min-width: 768px) {
             .content-wrapper {
                 margin-left: 270px;
-            }
+            } {% endcomment %}
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 1050;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Dava Takip Sistemi</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/client/add_client">Müvekkil Ekleme</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/case/add_case">Dava Ekleme</a>
-                    </li>
-                </ul>
+    {% include 'partials/navbar.html' %}
 
-                <!-- Çıkış butonunu sağa alma -->
-                <ul class="navbar-nav ms-auto">
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Çıkış</a>
-                    </li>
-                    {% endif %}
-                    
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div class="notification-box">
+        {% include 'partials/notification_box.html' %}
+    </div>
+    <!-- Bildirim Kutusu -->
+    
 
-   <div class="notification-box border p-3" style="position: fixed; top: 56px; left: 0; width: 250px; height: 80vh; overflow-y: auto;">
-    <a href="/notifications" style="font-size: 1.25rem; font-weight: bold; color: black; text-decoration: none; margin: 0; display: block;">Bildirimler</a>
-
-    <ul class="list-group">
-        {% for notification in notifications %}
-            <li class="list-group-item {% if notification.is_read %}text-muted{% else %}{% if notification.priority == 'Kırmızı' %}bg-danger{% elif notification.priority == 'Sarı' %}bg-warning{% endif %}{% endif %}">
-                {% if notification.url %}
-                    <a href="{{ notification.url }}" style="text-decoration: underline; color: inherit;">{{ notification.message }}</a>  <!-- Altı çizili ve renk miras alacak -->
-                {% else %}
-                    {{ notification.message }}
-                {% endif %}
-            </li>
-        {% empty %}
-            <li class="list-group-item">Henüz bildirim yok</li>
-        {% endfor %}
-    </ul>
-</div>
-
-
-
-
-    <!-- Content Block -->
+    <!-- İçerik Alanı -->
     <div class="container mt-4 content-wrapper">
         {% block content %}
         {% endblock %}
@@ -90,5 +48,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    
 </body>
 </html>

@@ -1,0 +1,19 @@
+/* Bildirim kutusunu yalnızca geniş ekranlarda göster */
+@media (max-width: 768px) {
+    .notification-box {
+        display: none;
+    }
+}
+
+/* Navbar drop-down ile bildirim kutusu çakışmasını önlemek için */
+.notification-box {
+    background-color: #f8f9fa;
+    z-index: 1000;
+}
+
+/* Ana içerik kısmının sol boşluğunu yalnızca geniş ekranlarda ayarla */
+@media (min-width: 768px) {
+    .content-wrapper {
+        margin-left: 350px;
+    }
+}

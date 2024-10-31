@@ -1,0 +1,17 @@
+<div class="notification-box border p-3" style="position: fixed; top: 56px; left: 0; width: 270px; height: 80vh; overflow-y: auto;">
+    <a href="/notifications" style="font-size: 1.25rem; font-weight: bold; color: black; text-decoration: none; margin: 0; display: block;">Bildirimler</a>
+
+    <ul class="list-group">
+        {% for notification in notifications %}
+            <li class="list-group-item {% if notification.is_read %}text-muted{% else %}{% if notification.priority == 'Kırmızı' %}bg-danger{% elif notification.priority == 'Sarı' %}bg-warning{% endif %}{% endif %}">
+                {% if notification.url %}
+                    <a href="{{ notification.url }}" style="text-decoration: underline; color: inherit;">{{ notification.message }}</a>
+                {% else %}
+                    {{ notification.message }}
+                {% endif %}
+            </li>
+        {% empty %}
+            <li class="list-group-item">Henüz bildirim yok</li>
+        {% endfor %}
+    </ul>
+</div>
