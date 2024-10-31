@@ -34,9 +34,10 @@
     <!-- Navbar -->
     {% include 'partials/navbar.html' %}
 
-    <div class="notification-box">
+    <div class="notification-box" {% if request.path == '/notifications/' %}style="display: none;"{% endif %}>
         {% include 'partials/notification_box.html' %}
     </div>
+    
     <!-- Bildirim Kutusu -->
     
 
