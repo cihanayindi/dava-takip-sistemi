@@ -3,20 +3,45 @@
 {% block title %} Bildirimler {% endblock %}
 
 {% block content %}
-{% comment %} <div class="notification-box border p-3" style="position: fixed; top: 56px; left: 0; width: 250px; height: 80vh; overflow-y: auto;">
-    <h5>Bildirimler</h5>
-    <ul class="list-group">
-        {% for notification in notifications %}
-            <li class="list-group-item {% if notification.is_read %}text-muted{% else %}{% if notification.priority == 'Kırmızı' %}bg-danger{% elif notification.priority == 'Sarı' %}bg-warning{% elif notification.priority == 'Mavi' %}bg-info{% endif %}{% endif %}">
-                {% if notification.url %}
-                    <a href="{{ notification.url }}" style="text-decoration: underline;">{{ notification.message }}</a>
-                {% else %}
-                    {{ notification.message }}
-                {% endif %}
-            </li>
-        {% empty %}
-            <li class="list-group-item">Henüz bildirim yok</li>
-        {% endfor %}
-    </ul>
-</div> {% endcomment %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Bildirimler</h1>
+    <table class="table table-striped table-bordered shadow">
+        <thead class="table-light">
+            <tr>
+                <th>Metin</th>
+                <th>Link</th>
+                <th>Okundu</th>
+                <th>Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for notification in notifications %}
+                <tr style="background-color: {% if notification.priority == 3 %} #ffcccc; {% elif notification.priority == 2 %} #ffe6cc; {% elif notification.priority == 1 %} #ccffcc; {% endif %}">
+                    <td>{{ notification.text }}</td>
+                    <td>
+                        <a href="{{ notification.link }}" class="btn btn-primary">Git</a>
+                    </td>
+                    <td>
+                        {% if notification.read %}
+                            <span class="text-success">Okundu</span>
+                        {% else %}
+                            <span class="text-danger">Okunmadı</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{% url 'notification_delete' notification.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="notification_id" value="{{ notification.id }}">
+                            <button type="submit" class="btn btn-danger">Sil</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">Henüz bildirim yok</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
