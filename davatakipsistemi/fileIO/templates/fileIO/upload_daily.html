@@ -4,200 +4,195 @@
 
 {% block content %}
 
-<div class="upload-container">
-    <h2>Excel Dosyası Yükle</h2>
-    
-    <div id="drop-zone">Excel Dosyasını Buraya Sürükleyin veya Tıklayın</div>
-    
-    <form id="upload-form" method="POST" enctype="multipart/form-data" action="{% url 'upload_file' %}">
-        {% csrf_token %}
-        <input type="file" id="file-input" name="file" accept=".xlsx" required>
-        <button type="submit" class="upload-btn">Yükle</button>
-    </form>
-    
-    <button id="view-content-btn" class="upload-btn" style="display: none;">İçeriği Görüntüle</button>
-    
-    <div id="file-name"></div>
+    <div class="upload-container">
+        <h2>Excel Dosyası Yükle</h2>
+        
+        <div id="drop-zone">Excel Dosyasını Buraya Sürükleyin veya Tıklayın</div>
+        
+        <form id="upload-form" method="POST" enctype="multipart/form-data" action="{% url 'upload_file' %}">
+            {% csrf_token %}
+            <input type="file" id="file-input" name="file" accept=".xlsx" required>
+            <button type="submit" class="upload-btn">Yükle ve İçeriği Görüntüle</button>
+        </form>
+        
+        <div id="file-name"></div>
 
-    <div class="table-container" id="table-container" style="display: none;">
-        <table id="excel-table"></table>
+        <div class="table-container" id="table-container" style="display: none;">
+            <table id="excel-table"></table>
+        </div>
     </div>
-</div>
 
-<script>
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const fileNameDisplay = document.getElementById('file-name');
-    const tableContainer = document.getElementById('table-container');
-    const excelTable = document.getElementById('excel-table');
-    const viewContentBtn = document.getElementById('view-content-btn');
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const fileNameDisplay = document.getElementById('file-name');
+        const tableContainer = document.getElementById('table-container');
+        const excelTable = document.getElementById('excel-table');
 
-    dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('click', () => fileInput.click());
 
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropZone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            dropZone.classList.add('dragover');
-        });
-    });
-
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('dragover');
-        });
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-        const file = e.dataTransfer.files[0];
-        if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
-            fileInput.files = e.dataTransfer.files;
-            fileNameDisplay.textContent = `Seçilen dosya: ${file.name}`;
-            viewContentBtn.style.display = "block";
-        } else {
-            alert("Lütfen geçerli bir Excel dosyası yükleyin.");
-        }
-    });
-
-    fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            fileNameDisplay.textContent = `Seçilen dosya: ${file.name}`;
-            viewContentBtn.style.display = "block";
-        }
-    });
-
-    viewContentBtn.addEventListener('click', async function() {
-        const formData = new FormData(document.getElementById('upload-form'));
-        const response = await fetch("{% url 'upload_file' %}", {
-            method: "POST",
-            body: formData
-        });
-        const data = await response.json();
-
-        excelTable.innerHTML = "";
-
-        if (data && data.rows) {
-            const headers = data.headers;
-            const rows = data.rows;
-
-            const headerRow = document.createElement("tr");
-            headers.forEach(header => {
-                const th = document.createElement("th");
-                th.textContent = header;
-                headerRow.appendChild(th);
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
             });
-            excelTable.appendChild(headerRow);
+        });
 
-            rows.forEach(row => {
-                const rowElement = document.createElement("tr");
-                row.forEach(cell => {
-                    const td = document.createElement("td");
-                    td.textContent = cell;
-                    rowElement.appendChild(td);
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+            });
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+                fileInput.files = e.dataTransfer.files;
+                fileNameDisplay.textContent = `Seçilen dosya: ${file.name}`;
+            } else {
+                alert("Lütfen geçerli bir Excel dosyası yükleyin.");
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                fileNameDisplay.textContent = `Seçilen dosya: ${file.name}`;
+            }
+        });
+
+        document.getElementById('upload-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch("{% url 'upload_file' %}", {
+                method: "POST",
+                body: formData
+            });
+            const data = await response.json();
+
+            excelTable.innerHTML = "";
+
+            if (data && data.rows) {
+                const headers = data.headers;
+                const rows = data.rows;
+
+                const headerRow = document.createElement("tr");
+                headers.forEach(header => {
+                    const th = document.createElement("th");
+                    th.textContent = header;
+                    headerRow.appendChild(th);
                 });
-                excelTable.appendChild(rowElement);
-            });
+                excelTable.appendChild(headerRow);
 
-            tableContainer.style.display = "block";
-        }
-    });
-</script>
+                rows.forEach(row => {
+                    const rowElement = document.createElement("tr");
+                    row.forEach(cell => {
+                        const td = document.createElement("td");
+                        td.textContent = cell;
+                        rowElement.appendChild(td);
+                    });
+                    excelTable.appendChild(rowElement);
+                });
 
-<style>
-    .upload-container {
-        background: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+                tableContainer.style.display = "block";
+            }
+        });
+    </script>
 
-    h2 {
-        text-align: center;
-        color: #333;
-    }
-
-    #drop-zone {
-        border: 2px dashed #007bff;
-        border-radius: 8px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        margin-bottom: 20px;
-        transition: background-color 0.3s;
-    }
-
-    #drop-zone.dragover {
-        background-color: #e9ecef;
-    }
-
-    #file-input {
-        display: none; /* Hide the file input */
-    }
-
-    .upload-btn {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .upload-btn:hover {
-        background-color: #0056b3;
-    }
-
-    #file-name {
-        text-align: center;
-        margin-top: 10px;
-        font-size: 16px;
-        color: #555;
-    }
-
-    .table-container {
-        margin-top: 20px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
-
-    th, td {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-
-    th {
-        background-color: #007bff;
-        color: white;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    @media (min-width: 768px) {
+    <style>
         .upload-container {
-            max-width: calc(100% - 270px); /* Ekran genişliğine göre maksimum genişlik */
-            margin-left: auto; /* Sol boşluk otomatik */
-            margin-right: 0; /* Sağdan 0 boşluk */
-            box-sizing: border-box; /* Padding ve border hesaplamalarına dahil et */
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-    }
-    
-    @media (max-width: 767px) {
-        .upload-container {
-            max-width: 100%; /* Küçük ekranlarda tam genişlik */
-            margin: 10px; /* Tüm kenarlara 10 piksel boşluk */
+
+        h2 {
+            text-align: center;
+            color: #333;
         }
-    }
-</style>
+
+        #drop-zone {
+            border: 2px dashed #007bff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        #drop-zone.dragover {
+            background-color: #e9ecef;
+        }
+
+        #file-input {
+            display: none; /* Hide the file input */
+        }
+
+        .upload-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .upload-btn:hover {
+            background-color: #0056b3;
+        }
+
+        #file-name {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        @media (min-width: 768px) {
+            .upload-container {
+                max-width: calc(100% - 270px); /* Ekran genişliğine göre maksimum genişlik */
+                margin-left: auto; /* Sol boşluk otomatik */
+                margin-right: 0; /* Sağdan 0 boşluk */
+                box-sizing: border-box; /* Padding ve border hesaplamalarına dahil et */
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .upload-container {
+                max-width: 100%; /* Küçük ekranlarda tam genişlik */
+                margin: 10px; /* Tüm kenarlara 10 piksel boşluk */
+            }
+        }
+    </style>
 {% endblock %}
