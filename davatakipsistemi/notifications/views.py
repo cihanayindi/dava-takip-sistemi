@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from Client.models import Notification # Bildirim modelinin yolu
-
+from django.shortcuts import get_object_or_404, redirect
 
 def add_notification():
 
