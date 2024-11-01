@@ -10,10 +10,26 @@
     background-color: #f8f9fa;
     z-index: 1000;
 }
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
 
 /* Ana içerik kısmının sol boşluğunu yalnızca geniş ekranlarda ayarla */
 @media (min-width: 768px) {
     .content-wrapper {
-        margin-left: 350px;
+        margin-left: 270px;
     }
 }

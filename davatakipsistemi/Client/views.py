@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.http import HttpResponse
 from .models import Client  # Client modelini içe aktarın
 from decimal import Decimal  # Decimal alanları için gerekli
@@ -6,8 +7,8 @@ from decimal import Decimal  # Decimal alanları için gerekli
 def addClient(request):
     if request.method == 'POST':
         # Formdan gelen verileri alıyoruz
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
+        name = request.POST.get('first_name')
+        surname = request.POST.get('last_name')
         tc_no = request.POST.get('tc_no')
         phone = request.POST.get('phone')
         email = request.POST.get('email')
@@ -20,10 +21,18 @@ def addClient(request):
         file_expenses = Decimal(request.POST.get('file_expenses', '0.00'))  # Dosya masrafları
         
         # Client nesnesi oluşturuluyor
-        client = Client(
+
+        existing_client = Client.objects.filter(tc=tc_no).exists()
+        
+        if existing_client:
+            # Hata mesajı veya yönlendirme yapılabilir
+            messages.warning(request, "Bu müşteri zaten kayıtlı.")
+            return redirect('add_client')  # Geri sayfaya yönlendirir.
+        else:
+            client = Client(
             tc=tc_no,
-            first_name=first_name,
-            last_name=last_name,
+            name=name,
+            surname=surname,
             address=address,
             phone=phone,
             email=email,
@@ -31,15 +40,13 @@ def addClient(request):
             amount_received=amount_received,
             remaining_balance=remaining_balance,
             file_expenses=file_expenses,
-            files="",  # Müvekkilin dosyaları (ilk etapta boş bırakabiliriz)
-            notes="",  # İlk ve soyad bilgisini notlara ekledik
-        )
+            files="",  
+            notes="",)
         
-        # Veritabanına kaydediyoruz
-        client.save()
-        
-        # Başarılı bir işlem sonrası yönlendirme
-        return redirect(f'/client/{client.id}')
+            # Kayıt ekleme işlemi
+            client.save()
+            # Başarılı bir işlem sonrası yönlendirme
+            return redirect(f'/client/{client.id}')
     
     # GET isteklerinde form sayfasını render ediyoruz
     else:
