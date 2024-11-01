@@ -3,6 +3,9 @@
 {% block title %} Anasayfa {% endblock %}
 
 {% block content %}
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <div class="container-fluid">
         <div class="row">
             <!-- Ana İçerik -->
@@ -17,30 +20,56 @@
                             <!-- Sonuçlar burada dinamik olarak görünecek -->
                         </div>
                     </div>
-
+                    
+                    <!-- DAVA BİLGİLERİ TABLOSU -->
                     <div class="case-table mt-4">
-                    <h5>Dava Bilgileri</h5>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Dava No</th>
-                                <th>Dava Türü</th>
-                                <th>Müvekkil</th>
-                                <th>Dava Durumu</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for case in cases %}
+                        <h5>Dava Bilgileri</h5>
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <td>{{ case.no }}</td>
-                                    <td>{{ case.type }}</td>
-                                    <td>{{ case.client }}</td>
-                                    <td>{{ case.status }}</td>
+                                    <th>Dava No</th>
+                                    <th>Dava Türü</th>
+                                    <th>Müvekkil</th>
+                                    <th>Dava Durumu</th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for case in page_obj %}
+                                    <tr>
+                                        <td>{{ case.case_number }}</td>
+                                        <td>{{ case.case_type }}</td>
+                                        <td>{{ case.client }}</td>
+                                        <td>{{ case.status }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="4">Dava listesinde dava bulunmamaktadır.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
+
+                    <!-- PAGINATION CONTROLS -->
+                    <div class="pagination">
+                        <span class="page-links">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1"><i class="fas fa-angle-double-left"></i></a> <!-- First page -->
+                                <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-left"></i></a> <!-- Previous -->
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                            </span>
+
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}"><i class="fas fa-angle-right"></i></a> <!-- Next -->
+                                <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a> <!-- Last page -->
+                            {% endif %}
+                        </span>
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -48,43 +77,6 @@
 
     <!-- JavaScript -->
     <script>
-        const data = [
-            "Dava 1: Miras davası",
-            "Dava 2: Boşanma davası",
-            "Dava 3: İş davası",
-            "Müvekkil 1: Ahmet Yılmaz",
-            "Müvekkil 2: Mehmet Demir",
-            "Müvekkil 3: Ayşe Kaya"
-        ];
-
-        // Dava bilgileri
-        const caseData = [
-            { no: 'D001', type: 'Miras Davası', client: 'Ahmet Yılmaz', status: 'Devam Ediyor' },
-            { no: 'D002', type: 'Boşanma Davası', client: 'Mehmet Demir', status: 'Tamamlandı' },
-            { no: 'D003', type: 'İş Davası', client: 'Ayşe Kaya', status: 'Devam Ediyor' }
-        ];
-
-        // Sayfa yüklendiğinde tabloyu doldur
-        window.onload = function() {
-            loadCaseTable();
-        };
-
-        function loadCaseTable() {
-            const caseTableBody = document.getElementById('caseTableBody');
-            caseTableBody.innerHTML = '';  // Eski tablo satırlarını temizle
-
-            caseData.forEach(caseInfo => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${caseInfo.no}</td>
-                    <td>${caseInfo.type}</td>
-                    <td>${caseInfo.client}</td>
-                    <td>${caseInfo.status}</td>
-                `;
-                caseTableBody.appendChild(row);
-            });
-        }
-
         function filterResults() {
             const input = document.getElementById('searchInput').value.toLowerCase();
             const resultsDiv = document.getElementById('searchResults');
