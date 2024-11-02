@@ -1,10 +1,157 @@
 {% extends "base.html" %}
 
-{% block title %} Müvekkil Listesi {%endblock%}
+{% block title %}Müvekkil Listesi{% endblock %}
 
 {% block content %}
-    {% for client in  clientList%}
-    {{client.name}}
-    
-    {% endfor %}
+<style>
+    /* Genel Stil */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    /* Tablo Stili */
+    table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+    th a {
+        color: white;
+        text-decoration: none;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Tıklanabilir Satırlar */
+    tbody tr {
+        cursor: pointer;
+    }
+
+    /* Sayfa Başına Öğe Sayısı Seçimi */
+    #per_page {
+        display: inline-block;
+        margin: 20px;
+        padding: 6px;
+        border: 1px solid #ddd;
+    }
+
+    /* Sayfalama Kontrolleri */
+    .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        color: #007bff;
+        padding: 8px 16px;
+        text-decoration: none;
+        margin: 0 4px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .pagination a:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .pagination span {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f1f1f1;
+    }
+</style>
+
+<h2>Müvekkil Listesi</h2>
+
+<!-- Sayfa Başına Öğe Sayısı Seçimi -->
+<label for="per_page">Sayfa başına:</label>
+<select id="per_page" onchange="updatePerPage()">
+    <option value="5" {% if per_page == "5" %}selected{% endif %}>5</option>
+    <option value="10" {% if per_page == "10" %}selected{% endif %}>10</option>
+    <option value="20" {% if per_page == "20" %}selected{% endif %}>20</option>
+    <option value="100" {% if per_page == "100" %}selected{% endif %}>100</option>
+</select>
+
+<!-- Client Listesi Tablosu -->
+<table border="1">
+    <thead>
+        <tr>
+            <th>TC</th>
+            <th><a href="?sort_by=name&sort_order={% if sort_by == 'name' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">Ad</a></th>
+            <th><a href="?sort_by=surname&sort_order={% if sort_by == 'surname' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">Soyad</a></th>
+            <th>Adres</th>
+            <th>Telefon</th>
+            <th>Email</th>
+            <th><a href="?sort_by=created_at&sort_order={% if sort_by == 'created_at' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">Oluşturulma Tarihi</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in page_obj %}
+            <tr onclick="window.location.href='/client/{{ client.id }}';">
+                <td>{{ client.tc }}</td>
+                <td>{{ client.name }}</td>
+                <td>{{ client.surname }}</td>
+                <td>{{ client.address }}</td>
+                <td>{{ client.phone }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.created_at|date:"d-m-Y H:i" }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7">Müvekkil bulunamadı.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Sayfalama Kontrolleri -->
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page=1&per_page={{ per_page }}&sort_by={{ sort_by }}&sort_order={{ sort_order }}">İlk Sayfa</a>
+        <a href="?page={{ page_obj.previous_page_number }}&per_page={{ per_page }}&sort_by={{ sort_by }}&sort_order={{ sort_order }}">Önceki</a>
+    {% endif %}
+
+    <span>Sayfa {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&per_page={{ per_page }}&sort_by={{ sort_by }}&sort_order={{ sort_order }}">Sonraki</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}&per_page={{ per_page }}&sort_by={{ sort_by }}&sort_order={{ sort_order }}">Son Sayfa</a>
+    {% endif %}
+</div>
+
+<script>
+    // Kullanıcı sayfa başına gösterilecek öğe sayısını seçtiğinde sayfayı yenile
+    function updatePerPage() {
+        const perPage = document.getElementById('per_page').value;
+        const url = new URL(window.location.href);
+        url.searchParams.set('per_page', perPage);
+        window.location.href = url.href;
+    }
+</script>
 {% endblock content %}

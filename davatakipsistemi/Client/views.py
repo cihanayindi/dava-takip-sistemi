@@ -62,12 +62,36 @@ def showClientDetail(request, id):
         "client": client  # Client nesnesini gönderiyoruz
     })
 
+from django.core.paginator import Paginator
+from django.shortcuts import render
+from .models import Client
+
 def showClientList(request):
-    clientList = Client.objects.all()
+    # Sayfa başına gösterilecek öğe sayısını al
+    per_page = request.GET.get('per_page', 10)
+    
+    # Sıralama parametrelerini al (default olarak name alanına göre sırala)
+    sort_by = request.GET.get('sort_by', 'name')
+    sort_order = request.GET.get('sort_order', 'asc')
+    if sort_order == 'desc':
+        sort_by = '-' + sort_by
+
+    # Veritabanından Client verilerini çek ve sırala
+    client_list = Client.objects.all().order_by(sort_by)
+    
+    # Sayfalama işlemi
+    paginator = Paginator(client_list, per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     context = {
-        'clientList' : clientList,
+        'page_obj': page_obj,
+        'per_page': per_page,
+        'sort_order': sort_order,
+        'sort_by': sort_by,
     }
-    return render(request, "Client/client_list.html",context)
+    return render(request, "Client/client_list.html", context)
+
 
 def addSampleClients(request):
     # Örnek müvekkil verisi ekle
