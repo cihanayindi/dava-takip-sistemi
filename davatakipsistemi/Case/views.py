@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from Client.models import Case
 from Client.models import Client  # Client modelinin yolu
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404
+from datetime import date
 
 
 def addCase(request):
@@ -56,8 +56,8 @@ def showCaseDetail(request, id):
     case = get_object_or_404(Case, id=id)
     return render(request, "Case/case.html", {"case": case})
 
-from django.shortcuts import render
-from datetime import date
+def showCaseList(request):
+    return render(request, "case/case_list.html")
 
 def addSampleCases(request):
     # Örnek dava verisi ekle

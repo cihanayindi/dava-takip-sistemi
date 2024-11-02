@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from .models import Client  # Client modelini içe aktarın
 from decimal import Decimal  # Decimal alanları için gerekli
+from datetime import date
 
 def addClient(request):
     if request.method == 'POST':
@@ -61,9 +62,8 @@ def showClientDetail(request, id):
         "client": client  # Client nesnesini gönderiyoruz
     })
 
-from decimal import Decimal
-from datetime import date
-from .models import Client
+def showClientList(request):
+    return render(request, "Client/client_list.html")
 
 def addSampleClients(request):
     # Örnek müvekkil verisi ekle
