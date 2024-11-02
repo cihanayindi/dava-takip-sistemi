@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
-from .models import Client  # Client modelini içe aktarın
+from .models import Client, Case  # Client modelini içe aktarın
 from decimal import Decimal  # Decimal alanları için gerekli
 from datetime import date
 
@@ -56,11 +56,15 @@ def addClient(request):
 def showClientDetail(request, id):
     # ID ile Client nesnesini al
     client = get_object_or_404(Client, id=id)
+    casesForClient = Case.objects.filter(client_id = id)
     
+    context = {
+        "client": client,  # Client nesnesini gönderiyoruz
+        "casesForClient" : casesForClient,
+    }
+
     # Client nesnesini template'e gönder
-    return render(request, "Client/client.html", {
-        "client": client  # Client nesnesini gönderiyoruz
-    })
+    return render(request, "Client/client.html", context)
 
 from django.core.paginator import Paginator
 from django.shortcuts import render
