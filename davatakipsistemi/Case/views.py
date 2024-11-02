@@ -56,8 +56,36 @@ def showCaseDetail(request, id):
     case = get_object_or_404(Case, id=id)
     return render(request, "Case/case.html", {"case": case})
 
+from django.core.paginator import Paginator
+from django.shortcuts import render
+
 def showCaseList(request):
-    return render(request, "case/case_list.html")
+    # Varsayılan sıralama ayarları
+    sort_by = request.GET.get("sort_by", "created_at")
+    sort_order = request.GET.get("sort_order", "asc")
+    per_page = request.GET.get("per_page", "10")  # Sayfa başına varsayılan 10 öğe
+
+    # Geçerli sıralama yönü
+    if sort_order == "desc":
+        sort_by = f"-{sort_by}"
+
+    # Veritabanından sıralanmış dava verilerini al
+    cases = Case.objects.all().order_by(sort_by)
+
+    # Paginator ile sayfalama
+    paginator = Paginator(cases, per_page)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "page_obj": page_obj,
+        "sort_by": request.GET.get("sort_by", "created_at"),
+        "sort_order": request.GET.get("sort_order", "asc"),
+        "per_page": per_page,
+    }
+
+    return render(request, "case/case_list.html", context)
+
 
 def addSampleCases(request):
     # Örnek dava verisi ekle
