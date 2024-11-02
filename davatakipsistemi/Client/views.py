@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import Client, Case  # Client modelini içe aktarın
 from decimal import Decimal  # Decimal alanları için gerekli
 from datetime import date
+from django.core.paginator import Paginator
 
 def addClient(request):
     if request.method == 'POST':
@@ -66,10 +67,6 @@ def showClientDetail(request, id):
     # Client nesnesini template'e gönder
     return render(request, "Client/client.html", context)
 
-from django.core.paginator import Paginator
-from django.shortcuts import render
-from .models import Client
-
 def showClientList(request):
     # Sayfa başına gösterilecek öğe sayısını al
     per_page = request.GET.get('per_page', 10)
@@ -95,6 +92,9 @@ def showClientList(request):
         'sort_by': sort_by,
     }
     return render(request, "Client/client_list.html", context)
+
+def editClient(request):
+    return render(request, "Client/edit_client.html")
 
 
 def addSampleClients(request):
