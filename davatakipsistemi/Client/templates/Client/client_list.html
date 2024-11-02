@@ -3,5 +3,8 @@
 {% block title %} Müvekkil Listesi {%endblock%}
 
 {% block content %}
-    <h1>Müvekkil Listesi</h1>
+    {% for client in  clientList%}
+    {{client.name}}
+    
+    {% endfor %}
 {% endblock content %}

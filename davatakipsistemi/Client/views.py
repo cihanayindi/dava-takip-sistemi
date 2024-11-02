@@ -63,7 +63,11 @@ def showClientDetail(request, id):
     })
 
 def showClientList(request):
-    return render(request, "Client/client_list.html")
+    clientList = Client.objects.all()
+    context = {
+        'clientList' : clientList,
+    }
+    return render(request, "Client/client_list.html",context)
 
 def addSampleClients(request):
     # Örnek müvekkil verisi ekle
