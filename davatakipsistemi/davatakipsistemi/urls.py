@@ -36,4 +36,5 @@ urlpatterns = [
     path('client/', include('Client.urls')),
     path('case/', include('Case.urls')),
     path('auth/', include('authentication.urls')),
+    path('api/', include('api.urls')),
 ]

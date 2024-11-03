@@ -78,25 +78,6 @@ def notification_list(request):
     }
     return render(request, 'notifications/notifications.html', context)
 
-def get_notifications(request):
-    # Fetch notifications from the database
-    notifications = Notification.objects.all().order_by('-created_at')
-    
-    # Serialize notifications
-    notifications_data = [
-        {
-            'id': notification.id,
-            'message': notification.message,
-            'url': notification.url,
-            'is_read': notification.is_read,
-            'priority': notification.priority,
-            'created_at': notification.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-        }
-        for notification in notifications
-    ]
-    print(notifications_data)
-    return JsonResponse(notifications_data, safe=False)
-
 def notification_delete(request, id):
     """
     View to delete a specific notification.
