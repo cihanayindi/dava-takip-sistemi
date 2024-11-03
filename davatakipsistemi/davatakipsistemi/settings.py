@@ -45,6 +45,13 @@ INSTALLED_APPS = [
     'authentication'
 ]
 
+# Oturum ayarları
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Oturum verilerini veritabanında sakla
+SESSION_COOKIE_NAME = 'sessionid'  # Çerez adı
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Tarayıcı kapandığında oturumu sonlandırma
+SESSION_COOKIE_AGE = 1209600  # Çerez süresi (2 hafta)
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
