@@ -31,10 +31,17 @@
         border-bottom: 1px solid #ddd;
     }
 
+    /* Sıralanabilir Sütun Stili */
     th {
         background-color: #007bff;
         color: white;
         cursor: pointer;
+        position: relative;
+        transition: background-color 0.3s;
+    }
+
+    th:hover {
+        background-color: #0056b3;
     }
 
     th a {
@@ -42,10 +49,24 @@
         text-decoration: none;
     }
 
-    tr:hover {
-        background-color: #f1f1f1;
+    .sort-icon {
+        font-size: 12px;
+        margin-left: 5px;
+        opacity: 0.7;
+        transition: opacity 0.3s;
     }
 
+    th:hover .sort-icon {
+        opacity: 1;
+    }
+
+    {% comment %} tr:hover {
+        background-color: #f1f1f1;
+    } {% endcomment %}
+    tr:hover {
+        background-color: #e0e0e0; /* Daha koyu bir gri ton */
+    }
+    
     /* Tıklanabilir Satırlar */
     tbody tr {
         cursor: pointer;
@@ -102,14 +123,56 @@
 <table border="1">
     <thead>
         <tr>
-            <th><a href="?sort_by=case_number&sort_order={% if sort_by == 'case_number' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">Dava Numarası</a></th>
+            <th>
+                <a href="?sort_by=case_number&sort_order={% if sort_by == 'case_number' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">
+                    Dava Numarası
+                    {% if sort_by == 'case_number' %}
+                        <span class="sort-icon">{% if sort_order == 'asc' %}▲{% else %}▼{% endif %}</span>
+                    {% endif %}
+                </a>
+            </th>
             <th>Dava Türü</th>
             <th>Durum</th>
-            <th><a href="?sort_by=start_date&sort_order={% if sort_by == 'start_date' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">Başlangıç Tarihi</a></th>
-            <th><a href="?sort_by=end_date&sort_order={% if sort_by == 'end_date' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">Bitiş Tarihi</a></th>
-            <th><a href="?sort_by=hearing_date&sort_order={% if sort_by == 'hearing_date' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">Duruşma Tarihi</a></th>
-            <th><a href="?sort_by=court&sort_order={% if sort_by == 'court' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">Mahkeme</a></th>
-            <th><a href="?sort_by=created_at&sort_order={% if sort_by == 'created_at' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">Oluşturulma Tarihi</a></th>
+            <th>
+                <a href="?sort_by=start_date&sort_order={% if sort_by == 'start_date' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">
+                    Başlangıç Tarihi
+                    {% if sort_by == 'start_date' %}
+                        <span class="sort-icon">{% if sort_order == 'asc' %}▲{% else %}▼{% endif %}</span>
+                    {% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort_by=end_date&sort_order={% if sort_by == 'end_date' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">
+                    Bitiş Tarihi
+                    {% if sort_by == 'end_date' %}
+                        <span class="sort-icon">{% if sort_order == 'asc' %}▲{% else %}▼{% endif %}</span>
+                    {% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort_by=hearing_date&sort_order={% if sort_by == 'hearing_date' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">
+                    Duruşma Tarihi
+                    {% if sort_by == 'hearing_date' %}
+                        <span class="sort-icon">{% if sort_order == 'asc' %}▲{% else %}▼{% endif %}</span>
+                    {% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort_by=court&sort_order={% if sort_by == 'court' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">
+                    Mahkeme
+                    {% if sort_by == 'court' %}
+                        <span class="sort-icon">{% if sort_order == 'asc' %}▲{% else %}▼{% endif %}</span>
+                    {% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="?sort_by=created_at&sort_order={% if sort_by == 'created_at' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">
+                    Oluşturulma Tarihi
+                    {% if sort_by == 'created_at' %}
+                        <span class="sort-icon">{% if sort_order == 'asc' %}▲{% else %}▼{% endif %}</span>
+                    {% endif %}
+                </a>
+            </th>
         </tr>
     </thead>
     <tbody>

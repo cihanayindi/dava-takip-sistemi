@@ -3,11 +3,11 @@ from . import views
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
-    path('', views.addClient, name='client'),
-    path('add_client/', views.addClient, name='add_client'),
-    path("<int:id>", views.showClientDetail,name='show_client_detail'),
-    path("client_list/", views.showClientList, name="client_list"),
-    path("edit_client/", views.editClient, name="edit_client"),
+    path('', views.add_client, name='client'),
+    path('add_client/', views.add_client, name='add_client'),
+    path("<int:id>", views.show_client_detail,name='show_client_detail'),
+    path("client_list/", views.show_client_list, name="client_list"),
+    path("edit_client/", views.edit_client, name="edit_client"),
     # path('', login_required(views.client, login_url='/auth/login/'), name='client'),
     # path('addclient/', login_required(views.muvekkilEkle, login_url='/auth/login/'), name='muvekkilekle'),
 ]

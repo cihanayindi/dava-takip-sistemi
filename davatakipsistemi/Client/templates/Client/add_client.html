@@ -6,53 +6,54 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Ana İçerik -->
-            <div class="col-md-9 offset-md-3">
+            <div class="col-md-8 col-lg-8 offset-md-2 offset-lg-3">
                 <div class="main-content">
-                    <div class="form-section mt-4">
-                        <form method="POST" action="{% url 'add_client' %}" class="border p-4 rounded" style="max-width: 500px; margin: auto;">
+                    <div class="form-section my-5 p-4 shadow rounded bg-light">
+                        <h2 class="text-center mb-4 text-primary">Müvekkil Ekle</h2>
+                        <form method="POST" action="{% url 'add_client' %}" class="p-4">
                             {% csrf_token %}
 
                             <!-- İsim alanı, yalnızca harf girilebilir -->
-                            <div class="form-group">
-                                <label for="first_name">İsim:</label>
+                            <div class="form-group mb-3">
+                                <label for="first_name" class="form-label">İsim:</label>
                                 <input type="text" id="first_name" name="first_name" class="form-control" required 
-                                       pattern="^[A-Za-zÇçĞğİıÖöŞşÜü\s]+$" title="İsim sadece harflerden oluşmalıdır.">
+                                       pattern="^[A-Za-zÇçĞğİıÖöŞşÜü\s]+$" title="İsim sadece harflerden oluşmalıdır." placeholder="İsim giriniz">
                             </div>
 
                             <!-- Soyisim alanı, yalnızca harf girilebilir -->
-                            <div class="form-group mt-3">
-                                <label for="last_name">Soyisim:</label>
+                            <div class="form-group mb-3">
+                                <label for="last_name" class="form-label">Soyisim:</label>
                                 <input type="text" id="last_name" name="last_name" class="form-control" required 
-                                       pattern="^[A-Za-zÇçĞğİıÖöŞşÜü\s]+$" title="Soyisim sadece harflerden oluşmalıdır.">
+                                       pattern="^[A-Za-zÇçĞğİıÖöŞşÜü\s]+$" title="Soyisim sadece harflerden oluşmalıdır." placeholder="Soyisim giriniz">
                             </div>
 
                             <!-- TC Kimlik No alanı, yalnızca 11 haneli sayı girilebilir -->
-                            <div class="form-group mt-3">
-                                <label for="tc_no">TC Kimlik No:</label>
+                            <div class="form-group mb-3">
+                                <label for="tc_no" class="form-label">TC Kimlik No:</label>
                                 <input type="text" id="tc_no" name="tc_no" class="form-control" required 
-                                       pattern="^\d{11}$" title="TC Kimlik No 11 haneli bir sayı olmalıdır." maxlength="11">
+                                       pattern="^\d{11}$" title="TC Kimlik No 11 haneli bir sayı olmalıdır." maxlength="11" placeholder="12345678901">
                             </div>
 
                             <!-- Telefon numarası alanı, geçerli bir formatta olmalı -->
-                            <div class="form-group mt-3">
-                                <label for="phone">Telefon Numarası:</label>
+                            <div class="form-group mb-3">
+                                <label for="phone" class="form-label">Telefon Numarası:</label>
                                 <input type="tel" id="phone" name="phone" class="form-control" required 
-                                       pattern="^\+?\d{10,13}$" title="Telefon numarası geçerli bir formatta olmalıdır (örn: +905555555555 veya 05555555555).">
+                                       pattern="^\+?\d{10,13}$" title="Telefon numarası geçerli bir formatta olmalıdır (örn: +905555555555 veya 05555555555)." placeholder="+905555555555">
                             </div>
 
                             <!-- Mail adresi alanı, HTML5 e-posta doğrulaması -->
-                            <div class="form-group mt-3">
-                                <label for="email">Mail Adresi:</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
+                            <div class="form-group mb-3">
+                                <label for="email" class="form-label">Mail Adresi:</label>
+                                <input type="email" id="email" name="email" class="form-control" required placeholder="mail@example.com">
                             </div>
 
                             <!-- İkamet Adresi alanı, boş bırakılamaz -->
-                            <div class="form-group mt-3">
-                                <label for="address">İkamet Adresi:</label>
-                                <textarea id="address" name="address" class="form-control" rows="4" required></textarea>
+                            <div class="form-group mb-3">
+                                <label for="address" class="form-label">İkamet Adresi:</label>
+                                <textarea id="address" name="address" class="form-control" rows="3" required placeholder="Adres giriniz"></textarea>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mt-4">Müvekkil Ekle</button>
+                            <button type="submit" class="btn btn-primary w-100 py-2 mt-3">Müvekkil Ekle</button>
                         </form>
                     </div>
                 </div>

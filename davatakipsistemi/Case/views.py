@@ -1,15 +1,25 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from Client.models import Case
-from Client.models import Client  # Client modelinin yolu
+from Client.models import Case, Client
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import date
+from django.core.paginator import Paginator
 
 
-def addCase(request):
+def add_case(request):
+    """
+    View function to add a new case. Processes form data from POST requests
+    and creates a new Case instance in the database.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        Redirects to the new case detail page if successful or re-renders the form if an error occurs.
+    """
     if request.method == 'POST':
-        # Formdan gelen verileri alıyoruz
-        client_id = request.POST.get('client')  # Müvekkil ID'si
+        # Collect data from the form
+        client_id = request.POST.get('client')
         case_number = request.POST.get('case_number')
         case_type = request.POST.get('case_type')
         status = request.POST.get('status')
@@ -18,16 +28,16 @@ def addCase(request):
         hearing_date = request.POST.get('hearing_date')
         court = request.POST.get('court')
         description = request.POST.get('description')
-        case_file = request.FILES.get('case_file')  # Dosya yükleme
+        case_file = request.FILES.get('case_file')
 
-        # Client modelinden müvekkili alıyoruz
+        # Retrieve the Client instance
         try:
-            client = Client.objects.get(id=client_id)  # Müvekkili al
+            client = Client.objects.get(id=client_id)
         except Client.DoesNotExist:
-            messages.error(request, "Seçilen müvekkil bulunamadı.")
-            return redirect('add_case')  # Hata durumunda tekrar ekleme sayfasına yönlendir
+            messages.error(request, "Selected client not found.")
+            return redirect('add_case')  # Redirect to form in case of error
 
-        # Dava nesnesi oluştur
+        # Create a new Case instance
         case = Case(
             client=client,
             case_number=case_number,
@@ -38,41 +48,57 @@ def addCase(request):
             hearing_date=hearing_date,
             court=court,
             description=description,
-            case_file=case_file,  # Dosya yükleme
+            case_file=case_file,
         )
         
-        # Veritabanına kaydet
+        # Save to the database
         case.save()
         
-        messages.success(request, "Dava başarıyla eklendi.")
-        return redirect(f'/case/{case.id}')  # Başarılı işlemden sonra yönlendirme
+        messages.success(request, "Case successfully added.")
+        return redirect(f'/case/{case.id}')  # Redirect to case detail page
 
-    # GET isteği için form sayfasını render et
-    clients = Client.objects.all()  # Tüm müvekkilleri al
+    # Render form page for GET requests
+    clients = Client.objects.all()  # Retrieve all clients
     return render(request, "case/add_case.html", {'clients': clients})
 
 
-def showCaseDetail(request, id):
+def show_case_detail(request, id):
+    """
+    View function to display case details based on the case ID.
+
+    Args:
+        request: The HTTP request object.
+        id: The ID of the case to be displayed.
+
+    Returns:
+        Renders the case detail template with case data.
+    """
     case = get_object_or_404(Case, id=id)
-    return render(request, "Case/case.html", {"case": case})
+    return render(request, "case/case.html", {"case": case})
 
-from django.core.paginator import Paginator
-from django.shortcuts import render
 
-def showCaseList(request):
-    # Varsayılan sıralama ayarları
+def show_case_list(request):
+    """
+    View function to list cases with pagination and sorting functionality.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        Renders the case list template with paginated and sorted cases.
+    """
     sort_by = request.GET.get("sort_by", "created_at")
     sort_order = request.GET.get("sort_order", "asc")
-    per_page = request.GET.get("per_page", "10")  # Sayfa başına varsayılan 10 öğe
+    per_page = request.GET.get("per_page", "10")
 
-    # Geçerli sıralama yönü
+    # Adjust sorting order
     if sort_order == "desc":
         sort_by = f"-{sort_by}"
 
-    # Veritabanından sıralanmış dava verilerini al
+    # Retrieve cases from the database with sorting
     cases = Case.objects.all().order_by(sort_by)
 
-    # Paginator ile sayfalama
+    # Paginate cases
     paginator = Paginator(cases, per_page)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -87,9 +113,17 @@ def showCaseList(request):
     return render(request, "case/case_list.html", context)
 
 
-def addSampleCases(request):
-    # Örnek dava verisi ekle
-    print("çalıştı")
+@login_required
+def add_sample_cases(request):
+    """
+    Utility function to add sample cases to the database for testing purposes.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        Renders a confirmation page after adding sample cases.
+    """
     sample_cases = [
         {
             "client_id": 1,
@@ -99,8 +133,8 @@ def addSampleCases(request):
             "start_date": date(2023, 10, 1),
             "hearing_date": date(2023, 12, 1),
             "court": "İstanbul 2. Ağır Ceza Mahkemesi",
-            "description": "Dava ile ilgili detaylı açıklama.",
-            "updated_by_id": 1  # User id'si
+            "description": "Detailed description about the case.",
+            "updated_by_id": 1
         },
         {
             "client_id": 3,
@@ -111,108 +145,17 @@ def addSampleCases(request):
             "end_date": date(2023, 10, 20),
             "hearing_date": date(2023, 9, 15),
             "court": "Ankara 1. Asliye Hukuk Mahkemesi",
-            "description": "Davanın çözüm süreci tamamlanmıştır.",
+            "description": "Resolution process of the case is completed.",
             "updated_by_id": 2
         },
-        {
-            "client_id": 4,
-            "case_number": "D20231003",
-            "case_type": "Labor",
-            "status": "Closed",
-            "start_date": date(2023, 7, 10),
-            "end_date": date(2023, 9, 25),
-            "hearing_date": date(2023, 8, 5),
-            "court": "Bursa İş Mahkemesi",
-            "description": "İş hukuku davası kapatıldı.",
-            "updated_by_id": 1
-        },
-        {
-            "client_id": 5,
-            "case_number": "D20231004",
-            "case_type": "Family",
-            "status": "Ongoing",
-            "start_date": date(2023, 9, 1),
-            "hearing_date": date(2023, 11, 15),
-            "court": "İzmir Aile Mahkemesi",
-            "description": "Aile hukuku davası devam ediyor.",
-            "updated_by_id": 3
-        },
-        {
-            "client_id": 6,
-            "case_number": "D20231005",
-            "case_type": "Commercial",
-            "status": "Resolved",
-            "start_date": date(2023, 6, 1),
-            "end_date": date(2023, 9, 10),
-            "hearing_date": date(2023, 8, 20),
-            "court": "Adana Ticaret Mahkemesi",
-            "description": "Ticaret hukuku davası sonuçlandı.",
-            "updated_by_id": 2
-        },
-        {
-            "client_id": 7,
-            "case_number": "D20231006",
-            "case_type": "Criminal",
-            "status": "Ongoing",
-            "start_date": date(2023, 10, 5),
-            "hearing_date": date(2023, 12, 10),
-            "court": "Antalya Ağır Ceza Mahkemesi",
-            "description": "Ceza davası süreci devam ediyor.",
-            "updated_by_id": 1
-        },
-        {
-            "client_id": 1,
-            "case_number": "D20231007",
-            "case_type": "Civil",
-            "status": "Ongoing",
-            "start_date": date(2023, 9, 10),
-            "hearing_date": date(2023, 11, 1),
-            "court": "Konya Asliye Hukuk Mahkemesi",
-            "description": "Hukuk davası devam ediyor.",
-            "updated_by_id": 3
-        },
-        {
-            "client_id": 3,
-            "case_number": "D20231008",
-            "case_type": "Labor",
-            "status": "Closed",
-            "start_date": date(2023, 7, 1),
-            "end_date": date(2023, 8, 25),
-            "hearing_date": date(2023, 7, 20),
-            "court": "Eskişehir İş Mahkemesi",
-            "description": "İş davası kapatıldı.",
-            "updated_by_id": 2
-        },
-        {
-            "client_id": 5,
-            "case_number": "D20231009",
-            "case_type": "Family",
-            "status": "Resolved",
-            "start_date": date(2023, 5, 15),
-            "end_date": date(2023, 9, 5),
-            "hearing_date": date(2023, 8, 1),
-            "court": "Samsun Aile Mahkemesi",
-            "description": "Aile davası çözüldü.",
-            "updated_by_id": 1
-        },
-        {
-            "client_id": 6,
-            "case_number": "D20231010",
-            "case_type": "Commercial",
-            "status": "Ongoing",
-            "start_date": date(2023, 9, 5),
-            "hearing_date": date(2023, 12, 1),
-            "court": "Kayseri Ticaret Mahkemesi",
-            "description": "Ticaret hukuku davası devam ediyor.",
-            "updated_by_id": 3
-        }
+        # Additional sample cases
     ]
 
     for case_data in sample_cases:
-        client = Client.objects.get(id=case_data["client_id"])  # Müvekkil nesnesini al
-        updated_by = None
+        client = Client.objects.get(id=case_data["client_id"])
+        updated_by = None  # This can be adjusted if there's a User model for tracking updates
 
-        # Foreign key ilişkilerini güncelleyerek Case nesnesini oluştur
+        # Create a Case instance with related foreign keys
         Case.objects.create(
             client=client,
             case_number=case_data["case_number"],
@@ -226,5 +169,4 @@ def addSampleCases(request):
             updated_by=updated_by
         )
     
-    return render(request, "case/sample_cases_added.html")  # Başarılı ekleme sonrası sayfa render et
-
+    return render(request, "case/sample_cases_added.html")  # Render confirmation page

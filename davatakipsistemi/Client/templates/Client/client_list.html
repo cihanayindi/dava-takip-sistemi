@@ -19,7 +19,7 @@
 
     /* Tablo Stili */
     table {
-        width: 80%;
+        width: 90%;
         margin: 20px auto;
         border-collapse: collapse;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -31,10 +31,17 @@
         border-bottom: 1px solid #ddd;
     }
 
+    /* Sıralanabilir Sütun Stili */
     th {
         background-color: #007bff;
         color: white;
         cursor: pointer;
+        position: relative;
+        transition: background-color 0.3s;
+    }
+
+    th:hover {
+        background-color: #0056b3;
     }
 
     th a {
@@ -42,10 +49,24 @@
         text-decoration: none;
     }
 
-    tr:hover {
-        background-color: #f1f1f1;
+    .sort-icon {
+        font-size: 12px;
+        margin-left: 5px;
+        opacity: 0.7;
+        transition: opacity 0.3s;
     }
 
+    th:hover .sort-icon {
+        opacity: 1;
+    }
+
+    {% comment %} tr:hover {
+        background-color: #f1f1f1;
+    } {% endcomment %}
+    tr:hover {
+        background-color: #e0e0e0; /* Daha koyu bir gri ton */
+    }
+    
     /* Tıklanabilir Satırlar */
     tbody tr {
         cursor: pointer;
@@ -89,13 +110,12 @@
 
 <h2>Müvekkil Listesi</h2>
 
-<!-- Sayfa Başına Öğe Sayısı Seçimi -->
 <label for="per_page">Sayfa başına:</label>
 <select id="per_page" onchange="updatePerPage()">
-    <option value="5" {% if per_page == "5" %}selected{% endif %}>5</option>
-    <option value="10" {% if per_page == "10" %}selected{% endif %}>10</option>
-    <option value="20" {% if per_page == "20" %}selected{% endif %}>20</option>
-    <option value="100" {% if per_page == "100" %}selected{% endif %}>100</option>
+    <option value="5" {% if per_page == 5 %}selected{% endif %}>5</option>
+    <option value="10" {% if per_page == 10 %}selected{% endif %}>10</option>
+    <option value="20" {% if per_page == 20 %}selected{% endif %}>20</option>
+    <option value="100" {% if per_page == 100 %}selected{% endif %}>100</option>
 </select>
 
 <!-- Client Listesi Tablosu -->

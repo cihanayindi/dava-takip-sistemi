@@ -1,17 +1,17 @@
-<div class="notification-box border p-3" style="position: fixed; top: 56px; left: 0; width: 250px; height: calc(100vh - 56px); overflow-y: auto;">
-    <a href="/notifications" style="font-size: 1.25rem; font-weight: bold; color: black; text-decoration: none; margin: 0; display: block;">Bildirimler</a>
+<div class="notification-box border p-3" style="position: fixed; top: 56px; left: 0; width: 350px; height: calc(100vh - 56px); overflow-y: auto; background-color: #f8f9fa; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+    <a href="/notifications" style="font-size: 1.25rem; font-weight: bold; color: #333; text-decoration: none; margin: 0 0 15px; display: block; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Bildirimler</a>
 
-    <ul class="list-group">
+    <ul class="list-group" style="padding: 0;">
         {% for notification in notifications %}
-            <li class="list-group-item {% if notification.is_read %}text-muted{% else %}{% if notification.priority == 'Kırmızı' %}bg-danger{% elif notification.priority == 'Sarı' %}bg-warning{% endif %}{% endif %}">
+            <li class="list-group-item d-flex justify-content-between align-items-start {% if notification.is_read %}text-muted{% else %}{% if notification.priority == 'Kırmızı' %}bg-danger text-light{% elif notification.priority == 'Sarı' %}bg-warning{% endif %}{% endif %}" style="margin-bottom: 8px; border-radius: 6px; border: none; padding: 10px 15px; font-size: 0.95rem;">
                 {% if notification.url %}
-                    <a href="{{ notification.url }}" style="text-decoration: underline; color: inherit;">{{ notification.message }}</a>
+                    <a href="{{ notification.url }}" style="text-decoration: underline; color: inherit; font-weight: 500;">{{ notification.message }}</a>
                 {% else %}
-                    {{ notification.message }}
+                    <span style="font-weight: 500;">{{ notification.message }}</span>
                 {% endif %}
             </li>
         {% empty %}
-            <li class="list-group-item">Henüz bildirim yok</li>
+            <li class="list-group-item" style="text-align: center; color: #666; font-size: 0.9rem;">Henüz bildirim yok</li>
         {% endfor %}
     </ul>
 </div>

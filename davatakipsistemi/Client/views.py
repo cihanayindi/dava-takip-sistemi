@@ -1,14 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
-from .models import Client, Case  # Client modelini içe aktarın
-from decimal import Decimal  # Decimal alanları için gerekli
+from .models import Client, Case  # Import the Client model
+from decimal import Decimal  # Required for Decimal fields
 from datetime import date
 from django.core.paginator import Paginator
 
-def addClient(request):
+def add_client(request):
+    """
+    Adds a new client to the database.
+
+    If the request method is POST, retrieves client information from the form,
+    checks for duplicate clients by TC number, and saves the new client if not 
+    already registered. Redirects to the client's detail page upon success.
+    Renders the client addition form for GET requests.
+    """
     if request.method == 'POST':
-        # Formdan gelen verileri alıyoruz
+        # Get data from the form
         name = request.POST.get('first_name')
         surname = request.POST.get('last_name')
         tc_no = request.POST.get('tc_no')
@@ -16,71 +24,83 @@ def addClient(request):
         email = request.POST.get('email')
         address = request.POST.get('address')
         
-        # Diğer alanlar (varsa formdan alınabilir, sabit bir değer atanabilir veya eklenmeyebilir)
-        agreement_amount = Decimal(request.POST.get('agreement_amount', '0.00'))  # Anlaşma miktarı
-        amount_received = Decimal(request.POST.get('amount_received', '0.00'))  # Alınan miktar
-        remaining_balance = agreement_amount - amount_received  # Kalan bakiye
-        file_expenses = Decimal(request.POST.get('file_expenses', '0.00'))  # Dosya masrafları
+        # Other fields (can be taken from the form, assigned fixed values, or omitted)
+        agreement_amount = Decimal(request.POST.get('agreement_amount', '0.00'))  # Agreement amount
+        amount_received = Decimal(request.POST.get('amount_received', '0.00'))  # Amount received
+        remaining_balance = agreement_amount - amount_received  # Remaining balance
+        file_expenses = Decimal(request.POST.get('file_expenses', '0.00'))  # File expenses
         
-        # Client nesnesi oluşturuluyor
-
+        # Check if the client already exists
         existing_client = Client.objects.filter(tc=tc_no).exists()
         
         if existing_client:
-            # Hata mesajı veya yönlendirme yapılabilir
-            messages.warning(request, "Bu müşteri zaten kayıtlı.")
-            return redirect('add_client')  # Geri sayfaya yönlendirir.
+            # Display a warning message or redirect
+            messages.warning(request, "This client is already registered.")
+            return redirect('add_client')  # Redirect back to the form.
         else:
+            # Create a new Client instance
             client = Client(
-            tc=tc_no,
-            name=name,
-            surname=surname,
-            address=address,
-            phone=phone,
-            email=email,
-            agreement_amount=agreement_amount,
-            amount_received=amount_received,
-            remaining_balance=remaining_balance,
-            file_expenses=file_expenses,
-            files="",  
-            notes="",)
+                tc=tc_no,
+                name=name,
+                surname=surname,
+                address=address,
+                phone=phone,
+                email=email,
+                agreement_amount=agreement_amount,
+                amount_received=amount_received,
+                remaining_balance=remaining_balance,
+                file_expenses=file_expenses,
+                files="",  
+                notes="",)
         
-            # Kayıt ekleme işlemi
+            # Save the record
             client.save()
-            # Başarılı bir işlem sonrası yönlendirme
+            # Redirect to the client's detail page after successful operation
             return redirect(f'/client/{client.id}')
     
-    # GET isteklerinde form sayfasını render ediyoruz
+    # Render the form page for GET requests
     else:
         return render(request, 'client/add_client.html')
 
-def showClientDetail(request, id):
-    # ID ile Client nesnesini al
+def show_client_detail(request, id):
+    """
+    Displays the details of a specific client.
+
+    Retrieves the client based on the provided ID and fetches related cases.
+    Renders the client detail template with the client's information and cases.
+    """
+    # Get the Client instance by ID
     client = get_object_or_404(Client, id=id)
-    casesForClient = Case.objects.filter(client_id = id)
+    cases_for_client = Case.objects.filter(client_id=id)
     
     context = {
-        "client": client,  # Client nesnesini gönderiyoruz
-        "casesForClient" : casesForClient,
+        "client": client,  # Pass the Client instance
+        "cases_for_client": cases_for_client,
     }
 
-    # Client nesnesini template'e gönder
+    # Send the Client instance to the template
     return render(request, "Client/client.html", context)
 
-def showClientList(request):
-    # Sayfa başına gösterilecek öğe sayısını al
+def show_client_list(request):
+    """
+    Displays a paginated list of clients.
+
+    Retrieves client data from the database, applies sorting and pagination 
+    based on query parameters, and renders the client list template.
+    """
+    # Get the number of items to show per page
     per_page = request.GET.get('per_page', 10)
     
-    # Sıralama parametrelerini al (default olarak name alanına göre sırala)
+    # Get sorting parameters (default to sorting by name)
     sort_by = request.GET.get('sort_by', 'name')
     sort_order = request.GET.get('sort_order', 'asc')
     if sort_order == 'desc':
         sort_by = '-' + sort_by
 
-    # Veritabanından Client verilerini çek ve sırala
+    # Fetch and sort client data from the database
     client_list = Client.objects.all().order_by(sort_by)
     
-    # Sayfalama işlemi
+    # Pagination
     paginator = Paginator(client_list, per_page)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -93,12 +113,22 @@ def showClientList(request):
     }
     return render(request, "Client/client_list.html", context)
 
-def editClient(request):
+def edit_client(request):
+    """
+    Renders the client editing form.
+
+    This view currently does not handle any logic and simply returns the 
+    edit client template.
+    """
     return render(request, "Client/edit_client.html")
 
+def add_sample_clients(request):
+    """
+    Adds sample client data to the database.
 
-def addSampleClients(request):
-    # Örnek müvekkil verisi ekle
+    Creates multiple client records with predefined sample data.
+    """
+    # Sample client data
     sample_clients = [
         {
             "tc": "12345678901",
@@ -130,7 +160,7 @@ def addSampleClients(request):
             "files": "Dosya3, Dosya4",
             "notes": "Belge eklenecek."
         },
-        # Diğer örnek veriler
+        # Other sample data
         {
             "tc": "11223344556",
             "name": "Ayşe",
@@ -176,7 +206,7 @@ def addSampleClients(request):
             "files": "Dosya8",
             "notes": "Yeni dosya açılacak."
         },
-        # Diğer 5 örnek müvekkil verisi aynı yapıda eklenebilir.
+        # Additional 5 sample client data can be added in the same structure.
     ]
 
     for client_data in sample_clients:

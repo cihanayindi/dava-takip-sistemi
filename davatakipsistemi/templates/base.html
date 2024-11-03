@@ -21,14 +21,18 @@
             background-color: #f8f9fa;
             z-index: 1000;
         }
-
+        .logout-item {
+            margin-left: 50px; /* "Çıkış" öğesinin sol tarafına 15px boşluk ekler */
+        }
+        
         /* Ana içerik kısmının sol boşluğunu yalnızca geniş ekranlarda ayarla */
         {% comment %} @media (min-width: 768px) {
             .content-wrapper {
-                margin-left: 270px;
-            } {% endcomment %}
-        }
+                margin-right: 270px;
+            }
+        } {% endcomment %}
     </style>
+    
 </head>
 <body>
     <!-- Navbar -->

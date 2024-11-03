@@ -5,15 +5,17 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-9 offset-md-3">
+            <div class="col-md-8 col-lg-8 offset-md-2 offset-lg-3">
                 <div class="main-content">
-                    <div class="form-section mt-4">
-                        <form action="{% url 'add_case' %}" method="POST" enctype="multipart/form-data" class="border p-4 rounded">
+                    <div class="form-section my-5 p-4 shadow rounded bg-light">
+                        <h2 class="text-center mb-4 text-primary">Dava Ekle</h2>
+                        <form action="{% url 'add_case' %}" method="POST" enctype="multipart/form-data" class="p-4">
                             {% csrf_token %}
-                            
-                            <div class="form-group">
-                                <label for="client">Müvekkil</label>
-                                <select id="client" name="client" class="form-control" required>
+
+                            <!-- Arama yapılabilir Müvekkil seçme alanı -->
+                            <div class="form-group mb-3">
+                                <label for="client" class="form-label">Müvekkil</label>
+                                <select id="client" name="client" class="form-select" required>
                                     <option value="">Müvekkil Seçin</option>
                                     {% for client in clients %}
                                         <option value="{{ client.id }}">{{ client }}</option>
@@ -21,57 +23,74 @@
                                 </select>
                             </div>
 
-                            <!-- Diğer form alanları -->
-                            <div class="form-group mt-3">
-                                <label for="case_number">Dava Numarası</label>
-                                <input type="text" id="case_number" name="case_number" class="form-control" required>
+                            <div class="form-group mb-3">
+                                <label for="case_number" class="form-label">Dava Numarası</label>
+                                <input type="text" id="case_number" name="case_number" class="form-control" required placeholder="Dava numarasını giriniz">
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="case_type">Dava Türü</label>
-                                <input type="text" id="case_type" name="case_type" class="form-control" required>
+                            <div class="form-group mb-3">
+                                <label for="case_type" class="form-label">Dava Türü</label>
+                                <input type="text" id="case_type" name="case_type" class="form-control" required placeholder="Dava türünü giriniz">
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="status">Durum</label>
-                                <input type="text" id="status" name="status" class="form-control" required>
+                            <div class="form-group mb-3">
+                                <label for="status" class="form-label">Durum</label>
+                                <input type="text" id="status" name="status" class="form-control" required placeholder="Davaya ilişkin durumu giriniz">
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="start_date">Başlangıç Tarihi</label>
+                            <div class="form-group mb-3">
+                                <label for="start_date" class="form-label">Başlangıç Tarihi</label>
                                 <input type="date" id="start_date" name="start_date" class="form-control" required>
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="end_date">Bitiş Tarihi</label>
+                            <div class="form-group mb-3">
+                                <label for="end_date" class="form-label">Bitiş Tarihi</label>
                                 <input type="date" id="end_date" name="end_date" class="form-control">
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="hearing_date">Duruşma Tarihi</label>
+                            <div class="form-group mb-3">
+                                <label for="hearing_date" class="form-label">Duruşma Tarihi</label>
                                 <input type="date" id="hearing_date" name="hearing_date" class="form-control">
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="court">Mahkeme</label>
-                                <input type="text" id="court" name="court" class="form-control" required>
+                            <div class="form-group mb-3">
+                                <label for="court" class="form-label">Mahkeme</label>
+                                <input type="text" id="court" name="court" class="form-control" required placeholder="Mahkeme adını giriniz">
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="description">Açıklama</label>
-                                <textarea id="description" name="description" rows="4" class="form-control"></textarea>
+                            <div class="form-group mb-3">
+                                <label for="description" class="form-label">Açıklama</label>
+                                <textarea id="description" name="description" rows="4" class="form-control" placeholder="Davaya ilişkin açıklama giriniz"></textarea>
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="case_file">Dava Dosyası</label>
+                            <div class="form-group mb-3">
+                                <label for="case_file" class="form-label">Dava Dosyası</label>
                                 <input type="file" id="case_file" name="case_file" class="form-control">
                             </div>
 
-                            <button type="submit" class="btn btn-primary mt-4">Dava Ekle</button>
+                            <button type="submit" class="btn btn-primary w-100 py-2 mt-3">Dava Ekle</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- jQuery Kitaplığı -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Select2 Kütüphanesi -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    
+    <!-- Select2 Entegrasyonu -->
+    <script>
+        $(document).ready(function() {
+            $('#client').select2({
+                placeholder: "Müvekkil Seçin",
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
 {% endblock %}
