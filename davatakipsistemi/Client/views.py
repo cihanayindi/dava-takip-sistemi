@@ -72,7 +72,7 @@ def show_client_detail(request, id):
     # Get the Client instance by ID
     client = get_object_or_404(Client, id=id)
     cases_for_client = Case.objects.filter(client_id=id)
-    
+    print(cases_for_client)
     context = {
         "client": client,  # Pass the Client instance
         "cases_for_client": cases_for_client,

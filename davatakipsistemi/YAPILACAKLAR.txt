@@ -1,6 +1,9 @@
 MÜVEKİLİN DAVALARINDAKİ güncellemeler dava içerisinde sıralı olrak gözükecek 
 İŞ LİSTESİ SAYFASI YAPILACAK 
 müvekkil ve davalar için girilen alanar minimize edilebilecek
+bildirim box  için ajax sürekli güncelleme yapılması sağlanacak
+müvekkililn davalrı altında gözükmüyor bunu düzelteceğiz
+ana sayfadaki dava ve müvekkil  arama kısmını databaseye api ile entegre edeceğiz veya verileri direkt sayfaya yükleyip içerideki data ile arama yapacağız
 
 
 selenium ile uyaptan ve uetsden otomatik çekim yapılması için (
