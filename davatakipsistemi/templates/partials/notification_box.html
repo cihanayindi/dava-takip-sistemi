@@ -51,5 +51,9 @@
     }
 
     // Fetch notifications every 60 seconds
-    setInterval(fetchNotifications, 60000);
+    $(document).ready(function() {
+        fetchNotifications(); // Check notifications when the page loads
+        setInterval(fetchNotifications, 60000); // Continue checking every 60 seconds
+    });
+    
 </script>
