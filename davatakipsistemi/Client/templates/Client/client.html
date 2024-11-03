@@ -5,13 +5,38 @@ Müvekkil Detayı
 {% endblock title %}
 
 {% block content %}
-<!-- Bootstrap CSS bağlantısı -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .hover-highlight tbody tr {
+        background-color: white; /* Alternatif satır rengi kaldırıldı */
+        transition: background-color 0.3s ease;
+    }
+    .hover-highlight tbody tr:hover {
+        background-color: #d1ecf1; /* Belirgin hover rengi */
+        cursor: pointer;
+    }
+    .card-header, .table thead th {
+        background-color: #007bff;
+        color: white;
+    }
+    .card-footer {
+        background-color: #f8f9fa;
+    }
+    .btn-primary {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+    .container h1 {
+        font-weight: bold;
+        color: #333;
+    }
+</style>
 
 <div class="container mt-5">
     <h1 class="text-center mb-4">Müvekkil İsmi: {{ client.name }} {{ client.surname }}</h1>
-    <div class="card">
-        <div class="card-header">
+    
+    <div class="card shadow-lg">
+        <div class="card-header text-center">
             <h4>Müvekkil Bilgileri</h4>
         </div>
         <div class="card-body">
@@ -31,32 +56,32 @@ Müvekkil Detayı
             </ul>
         </div>
 
-        <table class="table table-striped table-bordered shadow">
-        <thead class="table-light">
-            <tr>
-                <th>Dava Numarası</th>
-                <th>Dava Tipi</th>
-                <th>Dava Durumu</th>
-                <th>Açıklama</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for case in casesForClient %}
-                <tr style="cursor: pointer;" onclick="window.location.href='/case/{{ case.id }}';">
-                    <td>{{ case.case_number }}</td>
-                    <td>{{ case.case_type }}</td>
-                    <td>{{ case.status }}</td>
-                    <td>{{ case.description }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4" class="text-center">Henüz dava yok</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-
-        </table>
-
+        <div class="table-responsive">
+            <table class="table table-bordered shadow hover-highlight">
+                <thead class="table-light">
+                    <tr>
+                        <th>Dava Numarası</th>
+                        <th>Dava Tipi</th>
+                        <th>Dava Durumu</th>
+                        <th>Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for case in cases_for_client %}
+                        <tr onclick="window.location.href='/case/{{ case.id }}';">
+                            <td>{{ case.case_number }}</td>
+                            <td>{{ case.case_type }}</td>
+                            <td>{{ case.status }}</td>
+                            <td>{{ case.description }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">Henüz dava yok</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
         <div class="card-footer text-center">
             <a href="{% url 'edit_client' %}" class="btn btn-primary">Müvekkilin Bilgilerini Düzenle</a>

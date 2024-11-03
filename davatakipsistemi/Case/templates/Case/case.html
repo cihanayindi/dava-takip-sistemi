@@ -7,15 +7,47 @@ Dava Detayı
 {% block content %}
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
+<style>
+    .card-header, .table thead th {
+        background-color: #007bff;
+        color: white;
+    }
+    .card {
+        border: 1px solid #007bff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-body ul.list-group li {
+        padding: 0.8rem 1.25rem;
+        border: none;
+        font-size: 1rem;
+    }
+    .card-body ul.list-group li:not(:last-child) {
+        border-bottom: 1px solid #dee2e6;
+    }
+    .card-footer {
+        background-color: #f8f9fa;
+    }
+    .btn-primary {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+    .container h1 {
+        font-weight: bold;
+        color: #333;
+        font-size: 1.75rem;
+    }
+</style>
+
 <div class="container mt-5">
     <h1 class="text-center mb-4">Dava Numarası: {{ case.case_number }}</h1>
-    <div class="card">
-        <div class="card-header">
+    
+    <div class="card shadow-lg">
+        <div class="card-header text-center">
             <h4>Dava Bilgileri</h4>
         </div>
         <div class="card-body">
             <ul class="list-group">
-                <li class="list-group-item"><strong>Müvekkil:</strong> {{ case.client.name }} {{case.client.surname}}</li>
+                <li class="list-group-item"><strong>Müvekkil:</strong> {{ case.client.name }} {{ case.client.surname }}</li>
                 <li class="list-group-item"><strong>Dava Türü:</strong> {{ case.case_type }}</li>
                 <li class="list-group-item"><strong>Durum:</strong> {{ case.status }}</li>
                 <li class="list-group-item"><strong>Başlangıç Tarihi:</strong> {{ case.start_date }}</li>

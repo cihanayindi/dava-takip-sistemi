@@ -14,30 +14,40 @@
             .notification-box {
                 display: none;
             }
+            .content-wrapper {
+                margin-left: 0;
+            }
+        }
+
+        /* 768px'den büyük ekranlarda bildirim kutusu ve içerik konumlandırma */
+        @media (min-width: 769px) {
+            .notification-box {
+                width: 350px;
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                background-color: #f8f9fa;
+                z-index: 1000;
+                overflow-y: auto;
+                padding: 20px;
+            }
+            .content-wrapper {
+                margin-left: 350px;
+            }
         }
 
         /* Navbar drop-down ile bildirim kutusu çakışmasını önlemek için */
-        .notification-box {
-            background-color: #f8f9fa;
-            z-index: 1000;
-        }
         .logout-item {
-            margin-left: 50px; /* "Çıkış" öğesinin sol tarafına 15px boşluk ekler */
+            margin-left: 50px; /* "Çıkış" öğesinin sol tarafına 50px boşluk ekler */
         }
-        
-        /* Ana içerik kısmının sol boşluğunu yalnızca geniş ekranlarda ayarla */
-        {% comment %} @media (min-width: 768px) {
-            .content-wrapper {
-                margin-right: 270px;
-            }
-        } {% endcomment %}
     </style>
-    
 </head>
 <body>
     <!-- Navbar -->
     {% include 'partials/navbar.html' %}
 
+    <!-- Bildirim Paneli -->
     <div class="notification-box" {% if request.path == '/notifications/' %}style="display: none;"{% endif %}>
         {% include 'partials/notification_box.html' %}
     </div>

@@ -2,7 +2,7 @@
 <div class="notification-box border p-3" style="position: fixed; top: 56px; left: 0; width: 350px; height: calc(100vh - 56px); overflow-y: auto; background-color: #f8f9fa; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
     <a href="/notifications" style="font-size: 1.25rem; font-weight: bold; color: #333; text-decoration: none; margin: 0 0 15px; display: block; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Bildirimler</a>
 
-    <ul class="list-group" style="padding: 0;">
+    <ul class="notification-list-group list-group" style="padding: 0;">
         <!-- Notifications will be injected here by JavaScript -->
     </ul>
 </div>
@@ -14,7 +14,7 @@
             url: '/api/get_notifications/', 
             method: 'GET',
             success: function(data) {
-                const notificationList = $('.list-group');
+                const notificationList = $('.notification-list-group'); // More specific selector
                 notificationList.empty(); // Clear existing notifications
 
                 if (data.length === 0) {
