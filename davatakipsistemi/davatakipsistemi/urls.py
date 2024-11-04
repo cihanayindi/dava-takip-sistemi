@@ -37,4 +37,5 @@ urlpatterns = [
     path('case/', include('Case.urls')),
     path('auth/', include('authentication.urls')),
     path('api/', include('api.urls')),
+    path('worklist/', include('worklist.urls')),
 ]

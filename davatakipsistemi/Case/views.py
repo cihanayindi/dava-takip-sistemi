@@ -23,9 +23,9 @@ def add_case(request):
         case_number = request.POST.get('case_number')
         case_type = request.POST.get('case_type')
         status = request.POST.get('status')
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        hearing_date = request.POST.get('hearing_date')
+        # start_date = request.POST.get('start_date')
+        # end_date = request.POST.get('end_date')
+        # hearing_date = request.POST.get('hearing_date')
         court = request.POST.get('court')
         description = request.POST.get('description')
         case_file = request.FILES.get('case_file')
@@ -43,9 +43,9 @@ def add_case(request):
             case_number=case_number,
             case_type=case_type,
             status=status,
-            start_date=start_date,
-            end_date=end_date,
-            hearing_date=hearing_date,
+            # start_date=start_date,
+            # end_date=end_date,
+            # hearing_date=hearing_date,
             court=court,
             description=description,
             case_file=case_file,

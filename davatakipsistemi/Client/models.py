@@ -75,9 +75,9 @@ class Case(models.Model):
     case_number = models.CharField(max_length=50, unique=True)  # Dava numarası
     case_type = models.CharField(max_length=30)                 # Dava türü
     status = models.CharField(max_length=20)                    # Dava durumu
-    start_date = models.DateField()                             # Başlangıç tarihi
-    end_date = models.DateField(null=True, blank=True)          # Bitiş tarihi
-    hearing_date = models.DateField(null=True, blank=True)      # Duruşma tarihi
+    # start_date = models.DateField()                             # Başlangıç tarihi
+    # end_date = models.DateField(null=True, blank=True)          # Bitiş tarihi
+    # hearing_date = models.DateField(null=True, blank=True)      # Duruşma tarihi
     court = models.CharField(max_length=100)                    # Mahkeme
     description = models.TextField(blank=True, null=True)       # Dava açıklaması
     created_at = models.DateTimeField(auto_now_add=True)        # Oluşturulma tarihi

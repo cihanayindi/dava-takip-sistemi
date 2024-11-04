@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'notifications',
     'Client',
     'Case',
-    'authentication'
+    'authentication',
+    'worklist'
 ]
 
 # Oturum ayarları

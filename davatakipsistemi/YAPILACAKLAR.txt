@@ -1,7 +1,7 @@
 MÜVEKİLİN DAVALARINDAKİ güncellemeler dava içerisinde sıralı olrak gözükecek  
-İŞ LİSTESİ SAYFASI YAPILACAK 
+İŞ LİSTESİ SAYFASI YAPILACAK                                                        ++++ sayfa açıldı ama içi doldurulmadı app oluşturuldu
 tebligatlar için ayrı sayfa yapılacak
-müvekkil ve davalar için girilen alanar minimize edilebilecek
+müvekkil ve davalar için girilen alanar minimize edilebilecek                       ++++++++++++ case modelinden başlangıç tarihi duruşma tarihi bitiş tarihi silindi
 
 ana sayfadaki dava ve müvekkil  arama kısmını databaseye api ile entegre edeceğiz veya verileri direkt sayfaya yükleyip içerideki data ile arama yapacağız 
 

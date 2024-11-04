@@ -15,7 +15,7 @@ def index(request):
     
     # Giriş yapmış gibi ayarla
     login(request, test_user)
-    cases = Case.objects.all().order_by('-start_date')  # Order by latest cases
+    cases = Case.objects.all().order_by('case_number')  # Order by latest cases
     paginator = Paginator(cases, 3)  # Show 10 cases per page
 
     page_number = request.GET.get('page')
