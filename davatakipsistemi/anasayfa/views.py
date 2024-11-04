@@ -3,6 +3,11 @@ from django.http.response import HttpResponse
 from Client.models import Case
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+import datetime
+import os.path
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
 # Create your views here.
 
@@ -21,7 +26,34 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    return render(request, 'anasayfa/index.html', {'page_obj': page_obj})
+    # Google Calendar API ayarları
+    SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
+    creds = None
+    events = []
+    
+    token_path = os.path.join(os.path.dirname(__file__), "token.json")
+    if os.path.exists(token_path):
+        creds = Credentials.from_authorized_user_file(token_path, SCOPES)
+
+
+    if creds:
+        try:
+            service = build("calendar", "v3", credentials=creds)
+            now = datetime.datetime.utcnow().isoformat() + "Z"  # UTC formatında şu anki zaman
+            events_result = service.events().list(
+                calendarId="primary",
+                timeMin=now,
+                maxResults=10,
+                singleEvents=True,
+                orderBy="startTime",
+            ).execute()
+            events = events_result.get("items", [])
+            
+        except HttpError as error:
+            print(f"Google Calendar API Hatası: {error}")
+
+    # Hem case verilerini hem de takvim etkinliklerini şablona gönder
+    return render(request, "anasayfa/index.html", {"page_obj": page_obj, "events": events})
 
 
 # def index(request):

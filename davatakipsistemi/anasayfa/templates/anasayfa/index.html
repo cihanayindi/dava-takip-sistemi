@@ -75,6 +75,23 @@
         </div>
     </div>
 
+    
+
+    <h2>Yaklaşan Etkinlikler</h2>
+    {% if events %}
+        <ul>
+            {% for event in events %}
+                <li>
+                    <strong>{{ event.summary }}</strong><br>
+                    Başlangıç: {{ event.start.dateTime|default:event.start.date }}<br>
+                    Bitiş: {{ event.end.dateTime|default:event.end.date }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Görünürde etkinlik yok.</p>
+    {% endif %}
+
     <!-- JavaScript -->
     <script>
         function filterResults() {
