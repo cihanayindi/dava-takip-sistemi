@@ -1,85 +1,73 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.contrib import messages
+from .models import TwoFactor
+from davatakipsistemi.settings import EMAIL_HOST_USER
+from django.contrib.auth.models import User
 
-def send_test_email():
+def send_2fa_email(user):
+    """Kullanıcıya mevcut 2FA doğrulama kodunu e-posta ile gönderir."""
+    if not user.email:
+        return "Kullanıcının geçerli bir e-posta adresi bulunamadı. Lütfen e-posta adresini güncelleyin."
+
+    two_factor, created = TwoFactor.objects.get_or_create(user=user)
+    if created or not two_factor.code:
+        two_factor.set_code()
+
+    html_message = render_to_string('email_templates/2fa_email.html', {'code': two_factor.code})
+    plain_message = strip_tags(html_message)
+
     send_mail(
-        'Test Email',
-        'This is a test email sent from Django.',
-        'davatakippaneli@gmail.com',  # Gönderen e-posta adresi
-        ['suakbenli@gmail.com'],  # Alıcı e-posta adresi
+        'İki Faktörlü Doğrulama Kodu',
+        plain_message,
+        EMAIL_HOST_USER,
+        [user.email],
         fail_silently=False,
+        html_message=html_message
     )
-    
-    
-    
+    return "Doğrulama kodu e-posta ile gönderildi."
+
 def login_request(request):
-    # if request.user.is_authenticated:
-    #     return redirect("/")
-    send_test_email()
+    """Kullanıcı giriş isteğini yönetir ve 2FA doğrulamasını gerçekleştirir."""
     if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        input_code = request.POST.get("verification_code")
+        print(username, password, input_code)
+        if input_code:  # verify.html üzerinden gelen 2FA kodunu doğrula
+            try:
+                user = User.objects.get(username=username)
+                two_factor = TwoFactor.objects.get(user=user)
 
-        user = authenticate(request, username = username, password = password)
+                if two_factor.is_code_valid(input_code):
+                    login(request, user)
+                    two_factor.delete()
+                    return redirect("/")
+                else:
+                    return render(request, "account/verify.html", {
+                        "error": "Doğrulama kodu geçersiz veya süresi dolmuş.",
+                        "username": username  # verify.html'e kullanıcı adı geçiliyor
+                    })
+            except (User.DoesNotExist, TwoFactor.DoesNotExist):
+                return render(request, "account/login.html", {"error": "Geçersiz kullanıcı veya doğrulama kodu."})
 
+        # Kullanıcı adı ve parolayla ilk doğrulama
+        user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
-            return redirect("/")
+            send_2fa_email(user)
+            return render(request, "account/verify.html", {
+                "error": "Doğrulama kodu gönderildi. Lütfen kontrol edin.",
+                "username": username  # verify.html'e kullanıcı adı geçiliyor
+            })
         else:
             return render(request, "account/login.html")
 
     return render(request, "account/login.html")
 
-def register_request(request):
-    pass
-    """if request.user.is_authenticated:
-        return redirect("home")
-        
-    if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
-        firstname = request.POST["firstname"]
-        lastname = request.POST["lastname"]
-        password = request.POST["password"]
-        repassword = request.POST["repassword"]
-
-        if password == repassword:
-            if User.objects.filter(username=username).exists():
-                return render(request, "account/register.html", 
-                {
-                    "error":"username kullanılıyor.",
-                    "username":username,
-                    "email":email,
-                    "firstname": firstname,
-                    "lastname":lastname
-                })
-            else:
-                if User.objects.filter(email=email).exists():
-                    return render(request, "account/register.html", 
-                    {
-                        "error":"email kullanılıyor.",
-                        "username":username,
-                        "email":email,
-                        "firstname": firstname,
-                        "lastname":lastname
-                    })
-                else:
-                    user = User.objects.create_user(username=username,email=email,first_name=firstname,last_name=lastname,password=password)
-                    user.save()
-                    return redirect("login")                    
-        else:
-            return render(request, "account/register.html", {
-                "error":"parola eşleşmiyor.",
-                "username":username,
-                "email":email,
-                "firstname": firstname,
-                "lastname":lastname
-            })
-
-    return render(request, "account/register.html")"""
-
 def logout_request(request):
+    """Kullanıcıyı çıkış yaptırır."""
     logout(request)
     return redirect("home")

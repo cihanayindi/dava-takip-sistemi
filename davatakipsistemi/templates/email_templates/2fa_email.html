@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .email-container {
+            font-family: Arial, sans-serif;
+            color: #333;
+            padding: 20px;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .code {
+            font-size: 32px;
+            color: #4CAF50;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .footer {
+            font-size: 12px;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">İki Faktörlü Doğrulama Kodu</div>
+        <p>Merhaba,</p>
+        <p>Hesabınıza giriş yapmak için aşağıdaki doğrulama kodunu kullanın:</p>
+        <div class="code">{{ code }}</div>
+        <p>Bu kodun süresi kısa bir süre sonra dolacaktır, bu yüzden hemen kullanın.</p>
+    </div>
+</body>
+</html>

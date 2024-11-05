@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import os
-import binascii
+
 
 
 class Client(models.Model):
@@ -149,20 +149,4 @@ class Notification(models.Model):
     def __str__(self):
         return f"{self.text} - {self.priority}"
     
-class CustomUsers(models.Model):
-    """
-    Bu model kullanıcı verilerini tutar
-    """
-    AUTHORITY_LEVELS = [
-        (1, 'User'),
-        (2, 'Admin'),
-    ]
-
-    username = models.CharField(max_length=30, unique=True)
-    password = models.CharField(max_length=200)
-    salt = models.CharField(max_length=30)
-    authority_level = models.IntegerField(choices=AUTHORITY_LEVELS, default=2)
-
-
-
 
