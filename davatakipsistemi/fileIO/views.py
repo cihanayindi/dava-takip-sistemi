@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from Client.models import DailyFile
 from django.views.decorators.csrf import csrf_exempt
+from .xlsxReader import read_excel_file
 
 @login_required
 def upload_page(request):
@@ -16,6 +17,7 @@ def upload_file(request):
         saved_files = []
         
         for excel_file in files:
+            # df = read_excel_file(excel_file)
             uploaded_file = DailyFile(file=excel_file)
             uploaded_file.save()
             saved_files.append(uploaded_file.file.name)

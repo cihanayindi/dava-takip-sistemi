@@ -1,0 +1,28 @@
+<!-- templates/account/verify.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="col-12 col-md-6 offset-md-3">
+        <h3 class="text-center">Email Doğrulama</h3>
+        
+        {% if error %}
+            <div class="alert alert-danger">
+                {{ error }}
+            </div>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="username" value="{{ username }}">
+            
+            <div class="mb-3">
+                <label for="verification_code" class="form-label">Email adresinize gönderilen doğrulama kodunu giriniz</label>
+                <input type="text" name="verification_code" class="form-control" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100">Doğrula</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

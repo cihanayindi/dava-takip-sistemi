@@ -42,8 +42,13 @@ INSTALLED_APPS = [
     'notifications',
     'Client',
     'Case',
-    'authentication',
-    'worklist'
+    'account',
+    'worklist',   
+    'django_otp',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_static',
+    
+    
 ]
 
 # Oturum ayarları
@@ -61,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'django_otp.middleware.OTPMiddleware',
 ]
 
 ROOT_URLCONF = 'davatakipsistemi.urls'
@@ -147,10 +154,24 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
 
-STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'davatakippaneli@gmail.com'  # Gmail adresinizi buraya ekleyin
+EMAIL_HOST_PASSWORD = 'duinyshpymyvidjq'  # Yukarıda oluşturduğunuz uygulama şifresini buraya ekleyin
+DEFAULT_FROM_EMAIL = 'davatakippaneli@gmail.com'  # E-posta gönderen adres

@@ -21,3 +21,6 @@ def get_notifications(request):
         for notification in notifications
     ]
     return JsonResponse(notifications_data, safe=False)
+
+
+
