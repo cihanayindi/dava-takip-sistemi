@@ -54,8 +54,8 @@
                     <div class="pagination">
                         <span class="page-links">
                             {% if page_obj.has_previous %}
-                                <a href="?page=1"><i class="fas fa-angle-double-left"></i></a> <!-- First page -->
-                                <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-left"></i></a> <!-- Previous -->
+                                <a href="?page=1"><i class="fas fa-angle-double-left"></i></a>
+                                <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-left"></i></a>
                             {% endif %}
 
                             <span class="current">
@@ -63,38 +63,35 @@
                             </span>
 
                             {% if page_obj.has_next %}
-                                <a href="?page={{ page_obj.next_page_number }}"><i class="fas fa-angle-right"></i></a> <!-- Next -->
-                                <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a> <!-- Last page -->
+                                <a href="?page={{ page_obj.next_page_number }}"><i class="fas fa-angle-right"></i></a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a>
                             {% endif %}
                         </span>
                     </div>
 
-
+                    <!-- Google Calendar Widget (Now inside main-content) -->
+                    <div class="google-calendar-widget mt-4">
+                        <h5>Google Takvim Etkinlikleri</h5>
+                        <div class="calendar-container">
+                            <iframe src="https://calendar.google.com/calendar/embed?src=davatakippaneli%40gmail.com&ctz=Europe%2FIstanbul" 
+                                    style="border: 0; width: 100%; height: 600px;" frameborder="0" scrolling="no">
+                            </iframe>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    
-
-    <div class="google-calendar-widget mt-4">
-        <h5 class="calendar-container">Google Takvim Etkinlikleri</h5>
-        <!-- Google Calendar embed iframe -->
-        <div class="calendar-container">
-            <iframe src="https://calendar.google.com/calendar/embed?src=davatakippaneli%40gmail.com&ctz=Europe%2FIstanbul" 
-                    style="border: 0" width="800" height="600" frameborder="0" scrolling="no">
-            </iframe>
-        </div>
-    </div>
-
     <style>
         .calendar-container {
-            display: flex;
-            justify-content: center;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .google-calendar-widget h5 {
+            margin-bottom: 1rem;
         }
     </style>
-
-
 
     <!-- JavaScript -->
     <script>
@@ -104,14 +101,14 @@
             resultsDiv.innerHTML = '';  // Eski sonuçları temizle
             
             if (input === '') {
-                resultsDiv.style.display = 'none'; // Eğer input boşsa sonuçları gizle
+                resultsDiv.style.display = 'none';
                 return;
             }
 
             const filteredResults = data.filter(item => item.toLowerCase().includes(input));
 
             if (filteredResults.length > 0) {
-                resultsDiv.style.display = 'block'; // Sonuçlar varsa göster
+                resultsDiv.style.display = 'block';
                 filteredResults.forEach(item => {
                     const resultItem = document.createElement('div');
                     resultItem.classList.add('result-item');
@@ -119,7 +116,7 @@
                     resultsDiv.appendChild(resultItem);
                 });
             } else {
-                resultsDiv.style.display = 'none'; // Eğer sonuç yoksa gizle
+                resultsDiv.style.display = 'none';
             }
         }
     </script>

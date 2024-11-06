@@ -89,7 +89,7 @@ Müvekkil Detayı
         <div class="card-footer text-center">
             <a href="{% url 'edit_client' %}" class="btn btn-primary">Müvekkilin Bilgilerini Düzenle</a>
             <a href="{% url 'download_client_docx' client.id %}" class="btn btn-secondary">Word İndir</a>
-            <a href="{% url 'download_client_pdf' client.id %}" class="btn btn-secondary">PDF İndir</a>
+            <a href="{% url 'download_client_pdf' client.id %}" class="btn btn-secondary" target="_blank">PDF İndir</a>
         </div>
 
     </div>
