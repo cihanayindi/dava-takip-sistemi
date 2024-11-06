@@ -1,5 +1,5 @@
 MÜVEKİLİN DAVALARINDAKİ güncellemeler dava içerisinde sıralı olrak gözükecek  
-İŞ LİSTESİ SAYFASI YAPILACAK                                                        ++++ sayfa açıldı ama içi doldurulmadı app oluşturuldu
+İŞ LİSTESİ SAYFASI YAPILACAK                                                        ++++ sayfa açıldı ama içi doldurulmadı app oluşturuldu ---- app kapatıldı html olarak diğer app'e eklendi
 tebligatlar için ayrı sayfa yapılacak
 müvekkil ve davalar için girilen alanar minimize edilebilecek                       ++++++++++++ case modelinden başlangıç tarihi duruşma tarihi bitiş tarihi silindi
 
@@ -19,9 +19,9 @@ selenium ile uyaptan ve uetsden otomatik çekim yapılması için (
 
 
 
-GOOGLE TAKVİM BAĞLANTISI YAPILACAK
+GOOGLE TAKVİM BAĞLANTISI YAPILACAK ++++++++ google takvim bağlantısı yapıldı
 
-müvekkil dosyası exportr edilebilecek
+müvekkil dosyası exportr edilebilecek ++++++++++++ docx veya pdf olarak indirilebilir yapıldı
 
 
 
