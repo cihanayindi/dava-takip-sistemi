@@ -133,7 +133,7 @@
             </th>
             <th>Dava Türü</th>
             <th>Durum</th>
-            <th>
+            {% comment %} <th>
                 <a href="?sort_by=start_date&sort_order={% if sort_by == 'start_date' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">
                     Başlangıç Tarihi
                     {% if sort_by == 'start_date' %}
@@ -156,7 +156,7 @@
                         <span class="sort-icon">{% if sort_order == 'asc' %}▲{% else %}▼{% endif %}</span>
                     {% endif %}
                 </a>
-            </th>
+            </th> {% endcomment %}
             <th>
                 <a href="?sort_by=court&sort_order={% if sort_by == 'court' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&per_page={{ per_page }}">
                     Mahkeme
@@ -181,9 +181,9 @@
                 <td>{{ case.case_number }}</td>
                 <td>{{ case.case_type }}</td>
                 <td>{{ case.status }}</td>
-                <td>{{ case.start_date|date:"d-m-Y" }}</td>
+                {% comment %} <td>{{ case.start_date|date:"d-m-Y" }}</td>
                 <td>{{ case.end_date|date:"d-m-Y" }}</td>
-                <td>{{ case.hearing_date|date:"d-m-Y" }}</td>
+                <td>{{ case.hearing_date|date:"d-m-Y" }}</td> {% endcomment %}
                 <td>{{ case.court }}</td>
                 <td>{{ case.created_at|date:"d-m-Y H:i" }}</td>
             </tr>

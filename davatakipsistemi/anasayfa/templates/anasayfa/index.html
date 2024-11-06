@@ -6,52 +6,76 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+    <!-- Notification Box -->
+    <div class="notification-box" {% if request.path == '/notifications/' %}style="display: none;"{% endif %}>
+        {% include 'partials/notification_box.html' %}
+    </div>
+
+    <!-- Main Content -->
     <div class="container-fluid">
         <div class="row">
-            <!-- Ana İçerik -->
-            <div class="col-md-9 offset-md-3">
-                <div class="main-content">
+            <!-- Sidebar Space (to account for notification box) -->
+            <div class="col-md-3">
+                <!-- This space is intentionally left empty to account for the fixed notification box -->
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="col-md-8">
+                <div class="main-content mx-auto" style="max-width: 900px;">
                     <!-- Search Bar ve Sonuçlar Kutusu -->
                     <div class="search-section mt-4">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Arama yap..." onkeyup="filterResults()">
+                        <div class="input-group">
+                            <input type="text" id="searchInput" class="form-control" 
+                                   placeholder="Dava veya müvekkil ara..." 
+                                   autocomplete="off">
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
                         
                         <!-- Arama Sonuçları Kutusu -->
-                        <div id="searchResults" class="border mt-2 p-3" style="max-height: 300px; overflow-y: auto;">
-                            <!-- Sonuçlar burada dinamik olarak görünecek -->
+                        <div id="searchResults" class="search-results-container d-none">
+                            <div class="search-results-content">
+                                <!-- Results will be populated here -->
+                            </div>
                         </div>
                     </div>
                     
                     <!-- DAVA BİLGİLERİ TABLOSU -->
                     <div class="case-table mt-4">
-                        <h5>Dava Bilgileri</h5>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Dava No</th>
-                                    <th>Dava Türü</th>
-                                    <th>Müvekkil</th>
-                                    <th>Dava Durumu</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for case in page_obj %}
+                        <h5 class="text-center mb-3">Dava Bilgileri</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
                                     <tr>
-                                        <td>{{ case.case_number }}</td>
-                                        <td>{{ case.case_type }}</td>
-                                        <td>{{ case.client }}</td>
-                                        <td>{{ case.status }}</td>
+                                        <th>Dava No</th>
+                                        <th>Dava Türü</th>
+                                        <th>Müvekkil</th>
+                                        <th>Dava Durumu</th>
                                     </tr>
-                                {% empty %}
-                                    <tr>
-                                        <td colspan="4">Dava listesinde dava bulunmamaktadır.</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {% for case in page_obj %}
+                                        <tr>
+                                            <td>{{ case.case_number }}</td>
+                                            <td>{{ case.case_type }}</td>
+                                            <td>{{ case.client }}</td>
+                                            <td>{{ case.status }}</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="4" class="text-center">Dava listesinde dava bulunmamaktadır.</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <!-- PAGINATION CONTROLS -->
-                    <div class="pagination">
+                    <div class="pagination d-flex justify-content-center mt-3 mb-4">
                         <span class="page-links">
                             {% if page_obj.has_previous %}
                                 <a href="?page=1"><i class="fas fa-angle-double-left"></i></a>
@@ -69,9 +93,9 @@
                         </span>
                     </div>
 
-                    <!-- Google Calendar Widget (Now inside main-content) -->
-                    <div class="google-calendar-widget mt-4">
-                        <h5>Google Takvim Etkinlikleri</h5>
+                    <!-- Google Calendar Widget -->
+                    <div class="google-calendar-widget mt-4 mb-4">
+                        <h5 class="text-center mb-3">Google Takvim Etkinlikleri</h5>
                         <div class="calendar-container">
                             <iframe src="https://calendar.google.com/calendar/embed?src=davatakippaneli%40gmail.com&ctz=Europe%2FIstanbul" 
                                     style="border: 0; width: 100%; height: 600px;" frameborder="0" scrolling="no">
@@ -84,40 +108,128 @@
     </div>
 
     <style>
-        .calendar-container {
-            width: 100%;
+        .main-content {
+            padding: 0 20px;
+        }
+        .search-section {
+            position: relative;
+            max-width: 600px;
             margin: 0 auto;
         }
-        .google-calendar-widget h5 {
-            margin-bottom: 1rem;
+        .search-results-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .search-result-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .search-result-item:hover {
+            background-color: #f8f9fa;
+        }
+        .search-result-item h6 {
+            margin: 0;
+            color: #333;
+        }
+        .search-result-item p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .result-type-case {
+            border-left: 4px solid #007bff;
+        }
+        .result-type-client {
+            border-left: 4px solid #28a745;
+        }
+        .calendar-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .pagination {
+            margin-top: 1rem;
+        }
+        .page-links a {
+            padding: 5px 10px;
+            margin: 0 5px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .page-links .current {
+            padding: 5px 10px;
+            margin: 0 5px;
         }
     </style>
 
-    <!-- JavaScript -->
+    <!-- Keep your existing JavaScript -->
     <script>
-        function filterResults() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
-            const resultsDiv = document.getElementById('searchResults');
-            resultsDiv.innerHTML = '';  // Eski sonuçları temizle
+        let searchTimeout = null;
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
             
-            if (input === '') {
-                resultsDiv.style.display = 'none';
+            if (query.length < 2) {
+                searchResults.classList.add('d-none');
                 return;
             }
 
-            const filteredResults = data.filter(item => item.toLowerCase().includes(input));
+            searchTimeout = setTimeout(() => {
+                fetchSearchResults(query);
+            }, 300);
+        });
 
-            if (filteredResults.length > 0) {
-                resultsDiv.style.display = 'block';
-                filteredResults.forEach(item => {
-                    const resultItem = document.createElement('div');
-                    resultItem.classList.add('result-item');
-                    resultItem.textContent = item;
-                    resultsDiv.appendChild(resultItem);
-                });
-            } else {
-                resultsDiv.style.display = 'none';
+        // Close search results when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!searchResults.contains(event.target) && event.target !== searchInput) {
+                searchResults.classList.add('d-none');
             }
+        });
+
+        function fetchSearchResults(query) {
+            fetch(`/search/?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsContent = searchResults.querySelector('.search-results-content');
+                    resultsContent.innerHTML = '';
+
+                    if (data.results.length > 0) {
+                        data.results.forEach(result => {
+                            const resultElement = document.createElement('div');
+                            resultElement.className = `search-result-item result-type-${result.type}`;
+                            resultElement.innerHTML = `
+                                <h6>${result.title}</h6>
+                                <p>${result.subtitle}</p>
+                                <p class="mb-0"><small>${result.details}</small></p>
+                            `;
+                            resultElement.addEventListener('click', () => {
+                                window.location.href = result.url;
+                            });
+                            resultsContent.appendChild(resultElement);
+                        });
+                        searchResults.classList.remove('d-none');
+                    } else {
+                        resultsContent.innerHTML = '<div class="search-result-item"><p>Sonuç bulunamadı</p></div>';
+                        searchResults.classList.remove('d-none');
+                    }
+                })
+                .catch(error => {
+                    console.error('Search error:', error);
+                    searchResults.classList.add('d-none');
+                });
         }
     </script>
 {% endblock %}
