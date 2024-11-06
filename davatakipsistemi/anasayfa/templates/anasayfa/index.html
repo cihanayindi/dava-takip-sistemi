@@ -77,20 +77,24 @@
 
     
 
-    <h2>Yaklaşan Etkinlikler</h2>
-    {% if events %}
-        <ul>
-            {% for event in events %}
-                <li>
-                    <strong>{{ event.summary }}</strong><br>
-                    Başlangıç: {{ event.start.dateTime|default:event.start.date }}<br>
-                    Bitiş: {{ event.end.dateTime|default:event.end.date }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Görünürde etkinlik yok.</p>
-    {% endif %}
+    <div class="google-calendar-widget mt-4">
+        <h5 class="calendar-container">Google Takvim Etkinlikleri</h5>
+        <!-- Google Calendar embed iframe -->
+        <div class="calendar-container">
+            <iframe src="https://calendar.google.com/calendar/embed?src=davatakippaneli%40gmail.com&ctz=Europe%2FIstanbul" 
+                    style="border: 0" width="800" height="600" frameborder="0" scrolling="no">
+            </iframe>
+        </div>
+    </div>
+
+    <style>
+        .calendar-container {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+
+
 
     <!-- JavaScript -->
     <script>

@@ -37,5 +37,4 @@ urlpatterns = [
     path('case/', include('Case.urls')),
     path('account/', include('account.urls')),
     path('api/', include('api.urls')),
-    path('worklist/', include('worklist.urls')),
 ]

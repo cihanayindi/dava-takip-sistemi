@@ -85,3 +85,6 @@ def notification_delete(request, id):
     notification = get_object_or_404(Notification, id=id)
     notification.delete()
     return redirect('notification_list')
+
+def show_work_list(request):
+    return render(request, 'notifications/work_list.html')
