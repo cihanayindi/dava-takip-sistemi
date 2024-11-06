@@ -19,7 +19,7 @@ selenium ile uyaptan ve uetsden otomatik çekim yapılması için (
 
 
 
-GOOGLE TAKVİM BAĞLANTISI YAPILACAK ++++++++ google takvim bağlantısı yapıldı
+GOOGLE TAKVİM BAĞLANTISI YAPILACAK ++++++++ google takvim bağlantısı yapıldı ve sayfada ortalandı
 
 müvekkil dosyası exportr edilebilecek ++++++++++++ docx veya pdf olarak indirilebilir yapıldı
 
