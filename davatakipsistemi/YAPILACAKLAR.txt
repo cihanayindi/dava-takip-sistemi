@@ -3,7 +3,7 @@ MÜVEKİLİN DAVALARINDAKİ güncellemeler dava içerisinde sıralı olrak göz�
 tebligatlar için ayrı sayfa yapılacak
 müvekkil ve davalar için girilen alanar minimize edilebilecek                       ++++++++++++ case modelinden başlangıç tarihi duruşma tarihi bitiş tarihi silindi
 
-ana sayfadaki dava ve müvekkil  arama kısmını databaseye api ile entegre edeceğiz veya verileri direkt sayfaya yükleyip içerideki data ile arama yapacağız 
+ana sayfadaki dava ve müvekkil  arama kısmını databaseye api ile entegre edeceğiz veya verileri direkt sayfaya yükleyip içerideki data ile arama yapacağız ++++++++++ yapıldı
 
 bildirim box  için ajax sürekli güncelleme yapılması sağlanacak      ++++++++++++
 müvekkililn davalrı altında gözükmüyor bunu düzelteceğiz            ++++++++++
