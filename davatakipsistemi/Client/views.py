@@ -122,6 +122,46 @@ def edit_client(request):
     """
     return render(request, "Client/edit_client.html")
 
+from django.http import HttpResponse
+from docx import Document
+from .models import Client
+
+def download_client_docx(request, client_id):
+    client = Client.objects.get(id=client_id)
+    document = Document()
+    
+    document.add_heading(f'Müvekkil: {client.name} {client.surname}', 0)
+    document.add_paragraph(f'TC Kimlik No: {client.tc}')
+    document.add_paragraph(f'Telefon: {client.phone}')
+    document.add_paragraph(f'Email: {client.email}')
+    document.add_paragraph(f'Anlaşma Miktarı: {client.agreement_amount}')
+    # Add additional fields here...
+
+    # Save to a temporary response file
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = f'attachment; filename="{client.name}_{client.surname}.docx"'
+    document.save(response)
+    
+    return response
+
+from django.template.loader import render_to_string
+from weasyprint import HTML
+from django.http import HttpResponse
+from .models import Client
+
+def download_client_pdf(request, client_id):
+    client = Client.objects.get(id=client_id)
+    cases_for_client = Case.objects.filter(client_id=client_id)  # If related name for cases is set in the Client model
+    
+    html_content = render_to_string('Client/client_pdf_template.html', {'client': client, 'cases_for_client': cases_for_client})
+    pdf_file = HTML(string=html_content).write_pdf()
+
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{client.name}_{client.surname}.pdf"'
+    
+    return response
+
+
 def add_sample_clients(request):
     """
     Adds sample client data to the database.

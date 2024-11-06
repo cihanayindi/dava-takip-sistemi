@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Müvekkil Bilgileri PDF</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h1 { text-align: center; }
+        .table { width: 100%; border-collapse: collapse; }
+        .table, .table th, .table td { border: 1px solid black; padding: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Müvekkil: {{ client.name }} {{ client.surname }}</h1>
+    <p><strong>TC Kimlik No:</strong> {{ client.tc }}</p>
+    <p><strong>Telefon:</strong> {{ client.phone }}</p>
+    <p><strong>Email:</strong> {{ client.email }}</p>
+    <p><strong>Anlaşma Miktarı:</strong> {{ client.agreement_amount }}</p>
+    <!-- More fields here... -->
+
+    <h2>Dava Bilgileri</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Dava Numarası</th>
+                <th>Dava Tipi</th>
+                <th>Dava Durumu</th>
+                <th>Açıklama</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for case in cases_for_client %}
+                <tr>
+                    <td>{{ case.case_number }}</td>
+                    <td>{{ case.case_type }}</td>
+                    <td>{{ case.status }}</td>
+                    <td>{{ case.description }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">Henüz dava yok</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
