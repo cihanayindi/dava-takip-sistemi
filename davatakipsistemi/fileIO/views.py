@@ -8,6 +8,10 @@ import pandas as pd
 from Client.models import Case,ProcessTypes,CaseProgress,Notification
 from datetime import datetime, timedelta
 
+
+
+
+
 def add_process_type():
     df =read_excel_file("C:/Users/suakb/supi/bionluk/dava-takip-sistemi/excelIcerikleri/işlem türleri avukat1.xlsx")
     liste = df.values.tolist()
@@ -66,8 +70,8 @@ def process_safahat_file(df):
             log_missing_process_type(islem_turu)
             continue
         
-        date_obj = datetime.strptime(karar_tarihi, "%d.%m.%Y %H:%M")
-        deadline = date_obj + timedelta(days=current_process.deadline)
+        date_obj = datetime.strptime(karar_tarihi, "%d.%m.%Y")
+        
         progress_date=date_obj.strftime("%Y-%m-%d")
         progress_text = f"Karar Tarihi : {progress_date}\nİşlem Türü:{islem_turu}\nAçıklama:{aciklama} "
         
@@ -75,16 +79,19 @@ def process_safahat_file(df):
         related_case = Case.objects.filter(court=islem_yapan_birim, case_number=dosya_no).first()
         if related_case:
             notification_text=f"Dava Güncellendi:{islem_yapan_birim} - {dosya_no}\n{islem_turu}"
-            
+            deadline = date_obj + timedelta(days=current_process.deadline)
+            deadline = deadline.strftime("%Y-%m-%d")
             # Mevcut dava güncelleniyor
             create_case_progress(case=related_case, progress_date=progress_date, description=progress_text)    
             create_notification(text=notification_text,
                 priority=current_process.priority,
-                link=f"/case/{new_case.id}",
+                link=f"/case/{related_case.id}",
                 deadline_date=progress_date)
         
         else:
             notification_text=f"Safahat ile Otomatik Yeni Dava Eklendi : {islem_yapan_birim} - {dosya_no}\n{islem_turu}"
+            deadline = date_obj + timedelta(days=7)
+            deadline = deadline.strftime("%Y-%m-%d")
             # Yeni dava oluşturuluyor
             new_case = create_new_case(islem_yapan_birim, dosya_no)
             create_case_progress(case=new_case, progress_date=progress_date, description=progress_text)    
@@ -92,7 +99,7 @@ def process_safahat_file(df):
             create_notification(text=notification_text,
                                 priority=3,
                                 link=f"/case/{new_case.id}",
-                                deadline_date=progress_date)
+                                deadline_date=deadline)
             
 
 def process_tebligat_file(df):
@@ -179,7 +186,6 @@ def process_durusma_file(df):
 def update_case_progress(related_case, islem_turu, aciklama, karar_tarihi):
     """Mevcut dava için ilerleme kaydeder."""
     
-    
 
 def parse_case_details(konu):
     """Konudan mahkeme ve dosya numarasını çıkarır."""
@@ -196,13 +202,11 @@ def extract_safahat_row_data(row, basliklar):
     else:
         return row[0], row[1], row[2], row[3], row[4] if len(row) > 4 else None
 
-
 def log_missing_process_type(islem_turu):
     """İşlem türü bulunamadığında log kaydeder."""
     with open("bulunamayan.txt", "a+", encoding="utf-8") as f:
         f.write(islem_turu + "\n")
     print("İşlem türü bulunamadı")
-
 
 def create_new_case(mahkeme, dosya_no):
     """Yeni dava kaydeder."""
@@ -225,11 +229,9 @@ def create_notification(text,priority =3,link=None, deadline_date=None):
                                 deadline_date=deadline_date)
     notification.save()
 
-
 def generate_progress_text_durusma(durusma_tarihi, dosya_turu, islem, sonuc, taraf_bilgi):
     """Duruşma için ilerleme metni oluşturur."""
     return f"Dava Duruşma Güncellemesi Tarih:{durusma_tarihi}\nDosya Türü: {dosya_turu} - İşlem: {islem} - Sonuç: {sonuc}\nTaraf Bilgisi: {taraf_bilgi}"
-
 
 def extract_tebligat_row_data(row):
     """Tebligat dosyasındaki bir satırdan gerekli veriyi çıkartır."""
@@ -239,14 +241,9 @@ def extract_tebligat_row_data(row):
     teslim_tarihi = row[3]
     return gonderen, konu, durum, teslim_tarihi
 
-
 def extract_durusma_row_data(row):
     """Duruşma dosyasındaki bir satırdan gerekli veriyi çıkartır."""
     return row[0], row[1], row[2], row[3], row[4], row[5], row[6]
-
-
-
-
 
 def format_datetime(date_str):
     """Tarihi ve saati doğru formatta dönüştürür."""

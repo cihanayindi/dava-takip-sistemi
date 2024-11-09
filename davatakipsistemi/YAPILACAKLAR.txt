@@ -11,6 +11,20 @@ bildirim box biraz daha büyütülebilir zaten anasayfada yer varsa büyütürü
 Buradakilerin üzerine düşünüp gereksizleri eksiltip gerekliler
 
 MÜVEKİLİN DAVALARINDAKİ güncellemeler dava içerisinde sıralı olrak gözükecek  
+
+
+
+
+
+selenium ile uyaptan ve uetsden otomatik çekim yapılması için (
+    klasöre yükleme yapılırsa veri tabanı güncellenmeyecek 
+    direkt güncelleme yapılırsa :    api bağlantısı yapılabilir ya da adama siteden uyarı verebilliriz)
+sms  gönderme işlemi için avukatla görüşülüp  nasıl bir process olacağı konuşulacak
+
+
+GOOGLE TAKVİM BAĞLANTISI YAPILACAK ++++++++ google takvim bağlantısı yapıldı ve sayfada ortalandı
+
+müvekkil dosyası exportr edilebilecek ++++++++++++ docx veya pdf olarak indirilebilir yapıldı
 İŞ LİSTESİ SAYFASI YAPILACAK                                                        ++++ sayfa açıldı ama içi doldurulmadı app oluşturuldu ---- app kapatıldı html olarak diğer app'e eklendi
 tebligatlar için ayrı sayfa yapılacak
 müvekkil ve davalar için girilen alanar minimize edilebilecek                       ++++++++++++ case modelinden başlangıç tarihi duruşma tarihi bitiş tarihi silindi
@@ -24,23 +38,9 @@ bildirim box 350 piksel çakışmalar giderilecek                      +++++++++
 
 
 
-selenium ile uyaptan ve uetsden otomatik çekim yapılması için (
-    klasöre yükleme yapılırsa veri tabanı güncellenmeyecek 
-    direkt güncelleme yapılırsa :    api bağlantısı yapılabilir ya da adama siteden uyarı verebilliriz)
-
-
-
-GOOGLE TAKVİM BAĞLANTISI YAPILACAK ++++++++ google takvim bağlantısı yapıldı ve sayfada ortalandı
-
-müvekkil dosyası exportr edilebilecek ++++++++++++ docx veya pdf olarak indirilebilir yapıldı
 
 
 
 
 
-
-
-
-
-sms  gönderme işlemi için avukatla görüşülüp  nasıl bir process olacağı konuşulacak
 
