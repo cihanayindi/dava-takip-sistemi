@@ -1,3 +1,15 @@
+Case Otomatik olarak Oluşturulduğunda Case Sayfasında MÜvekkil Atama işlemi yapılacak
+Müvekkil Otomatik olarak Oluşturulduğunda Client Sayfası Açılarak Eksik bilgiler Doldurtulacak
+Davalar içindeki güncellemeler için bir model oluşturdum bu modeli case detayını gösterirken tarihe 
+    göre sıralı olarak göstereceğiz (class CaseProgress(models.Model):) burayı bağlayıp ilerlemeyi adım adım göstereceğiz
+bildirim box  üstüne anlık güncelle gibi bir ikon olacak normal güncelleme süresini 5 dakika gibi yaparız adam kendi günceller anlık istediğinde
+bildirim sayfasına ve belki box içine deadline da yazılacak belki kalan gün belki tarih olarak
+bildirim box ve biildirim sayfasına okundu ikonu eklenecek
+iş listesi sayfası caseprogress içinden yapılabilir
+vds kurulumu yapılacak
+bildirim box biraz daha büyütülebilir zaten anasayfada yer varsa büyütürüz
+Buradakilerin üzerine düşünüp gereksizleri eksiltip gerekliler
+
 MÜVEKİLİN DAVALARINDAKİ güncellemeler dava içerisinde sıralı olrak gözükecek  
 İŞ LİSTESİ SAYFASI YAPILACAK                                                        ++++ sayfa açıldı ama içi doldurulmadı app oluşturuldu ---- app kapatıldı html olarak diğer app'e eklendi
 tebligatlar için ayrı sayfa yapılacak

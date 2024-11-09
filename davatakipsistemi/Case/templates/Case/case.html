@@ -60,7 +60,11 @@ Dava Detayı
             </ul>
         </div>
         <div class="card-footer text-center">
-            <a href="{% url 'show_client_detail' case.client.id %}" class="btn btn-primary">İlgili Müvekkilin Sayfasına Git</a>
+            {% if case.client %}
+                <a href="{% url 'show_client_detail' case.client.id %}" class="btn btn-primary">İlgili Müvekkilin Sayfasına Git</a>
+            {% else %}
+                <p class="text-muted">Henüz ilgili bir müvekkil tanımlanmamış.</p>
+            {% endif %}
         </div>
     </div>
 </div>
