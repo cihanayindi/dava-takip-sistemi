@@ -89,6 +89,18 @@ class Case(models.Model):
         return f"{self.case_number} - {self.client}"
     
 
+class ProcessTypes(models.Model):
+    id = models.AutoField(primary_key=True)  # Otomatik artan ve unique id
+    file_type = models.CharField(max_length=50)
+    process_type = models.CharField(max_length=100, unique=True)
+    deadline = models.IntegerField()
+    priority = models.IntegerField()
+    description = models.TextField(blank=True)
+    
+    def __str__(self):
+        return self.process_type
+
+
 def get_upload_path(instance, filename):
     ext = filename.split('.')[-1].lower()
     folder_name = {
@@ -103,6 +115,7 @@ def get_upload_path(instance, filename):
 class DailyFile(models.Model):
     id = models.AutoField(primary_key=True)  # Otomatik artan ve unique id
     file = models.FileField(upload_to="uploads/daily_files",unique=True)
+    file_type = models.CharField(max_length=50,blank=True,null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -148,5 +161,7 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.text} - {self.priority}"
-    
+ 
+ 
+   
 

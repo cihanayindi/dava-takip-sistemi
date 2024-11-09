@@ -12,7 +12,6 @@ bildirim box 350 piksel çakışmalar giderilecek                      +++++++++
 
 
 
-
 selenium ile uyaptan ve uetsden otomatik çekim yapılması için (
     klasöre yükleme yapılırsa veri tabanı güncellenmeyecek 
     direkt güncelleme yapılırsa :    api bağlantısı yapılabilir ya da adama siteden uyarı verebilliriz)
